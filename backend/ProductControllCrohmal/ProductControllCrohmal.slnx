@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="ProductControllCrohmal/ProductControllCrohmal.csproj" />
+  <Project Path="Repositories/Repositories.csproj" />
+</Solution>
