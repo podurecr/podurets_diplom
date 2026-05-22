@@ -5,14 +5,15 @@ using Repositories.Entities;
 using Repositories.Enums;
 using Repositories.Repositories.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Repositories.Repositories.Interfaces;
 
 namespace Domain.Services.Services
 {
     public class BatchService : IBatchService
     {
-        private readonly BatchRepository batchRepository;
+        private readonly IBatchRepository batchRepository;
 
-        public BatchService(BatchRepository batchRepository)
+        public BatchService(IBatchRepository batchRepository)
         {
             this.batchRepository = batchRepository;
         }

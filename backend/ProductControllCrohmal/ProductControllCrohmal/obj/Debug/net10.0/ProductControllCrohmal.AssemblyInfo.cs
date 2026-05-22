@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProductControllCrohmal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+170b5677d5ee4a3a35f31e5eabd2a4714fbc26fd")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProductControllCrohmal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProductControllCrohmal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

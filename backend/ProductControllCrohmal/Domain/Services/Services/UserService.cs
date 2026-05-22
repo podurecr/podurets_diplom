@@ -4,6 +4,7 @@ using Domain.Security;
 using Domain.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Entities;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 
 namespace Domain.Services.Services
@@ -12,9 +13,9 @@ namespace Domain.Services.Services
     {
         private const string DefaultInitialPassword = "123456";
 
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(UserRepository userRepository)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }

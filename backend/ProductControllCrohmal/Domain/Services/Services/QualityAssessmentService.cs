@@ -3,6 +3,7 @@ using Domain.Mappers;
 using Domain.Services.Interfaces;
 using Repositories.Entities;
 using Repositories.Enums;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,18 @@ namespace Domain.Services.Services
 {
     public class QualityAssessmentService : IQualityAssessmentService
     {
-        private readonly QualityAssessmentRepository qualityAssessmentRepository;
-        private readonly BatchRepository batchRepository;
-        private readonly AnalysisResultRepository analysisResultRepository;
-        private readonly ProductQualitySpecificationRepository productQualitySpecificationRepository;
-        private readonly UserRepository userRepository;
+        private readonly IQualityAssessmentRepository qualityAssessmentRepository;
+        private readonly IBatchRepository batchRepository;
+        private readonly IAnalysisResultRepository analysisResultRepository;
+        private readonly IProductQualitySpecificationRepository productQualitySpecificationRepository;
+        private readonly IUserRepository userRepository;
 
         public QualityAssessmentService(
-            QualityAssessmentRepository qualityAssessmentRepository,
-            BatchRepository batchRepository,
-            AnalysisResultRepository analysisResultRepository,
-            ProductQualitySpecificationRepository productQualitySpecificationRepository,
-            UserRepository userRepository)
+            IQualityAssessmentRepository qualityAssessmentRepository,
+            IBatchRepository batchRepository,
+            IAnalysisResultRepository analysisResultRepository,
+            IProductQualitySpecificationRepository productQualitySpecificationRepository,
+            IUserRepository userRepository)
         {
             this.qualityAssessmentRepository = qualityAssessmentRepository;
             this.batchRepository = batchRepository;

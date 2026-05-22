@@ -2,6 +2,7 @@
 using Domain.Mappers;
 using Domain.Services.Interfaces;
 using Repositories.Entities;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Domain.Services.Services
 {
     public class AnalysisResultService : IAnalysisResultService
     {
-        private readonly AnalysisResultRepository analysisResultRepository;
+        private readonly IAnalysisResultRepository analysisResultRepository;
 
-        public AnalysisResultService(AnalysisResultRepository analysisResultRepository)
+        public AnalysisResultService(IAnalysisResultRepository analysisResultRepository)
         {
             this.analysisResultRepository = analysisResultRepository;
         }

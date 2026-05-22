@@ -2,15 +2,16 @@
 using Domain.Mappers;
 using Domain.Services.Interfaces;
 using Repositories.Entities;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 
 namespace Domain.Services.Services
 {
     public class ProductService : IProductService
     {
-        private readonly ProductRepository productRepository;
+        private readonly IProductRepository productRepository;
 
-        public ProductService(ProductRepository productRepository)
+        public ProductService(IProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }

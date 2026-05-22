@@ -2,15 +2,16 @@
 using Domain.Mappers;
 using Domain.Services.Interfaces;
 using Repositories.Entities;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 
 namespace Domain.Services.Services
 {
     public class ProductQualitySpecificationService : IProductQualitySpecificationService
     {
-        private readonly ProductQualitySpecificationRepository productQualitySpecificationRepository;
+        private readonly IProductQualitySpecificationRepository productQualitySpecificationRepository;
 
-        public ProductQualitySpecificationService(ProductQualitySpecificationRepository productQualitySpecificationRepository)
+        public ProductQualitySpecificationService(IProductQualitySpecificationRepository productQualitySpecificationRepository)
         {
             this.productQualitySpecificationRepository = productQualitySpecificationRepository;
         }

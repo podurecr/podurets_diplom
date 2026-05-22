@@ -3,6 +3,7 @@ using Domain.Mappers;
 using Domain.Services.Interfaces;
 using Repositories.Entities;
 using Repositories.Enums;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 using System.Text;
 
@@ -10,18 +11,18 @@ namespace Domain.Services.Services
 {
     public class QualityCertificateService : IQualityCertificateService
     {
-        private readonly QualityCertificateRepository qualityCertificateRepository;
-        private readonly BatchRepository batchRepository;
-        private readonly UserRepository userRepository;
-        private readonly AnalysisResultRepository analysisResultRepository;
-        private readonly QualityAssessmentRepository qualityAssessmentRepository;
+        private readonly IQualityCertificateRepository qualityCertificateRepository;
+        private readonly IBatchRepository batchRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IAnalysisResultRepository analysisResultRepository;
+        private readonly IQualityAssessmentRepository qualityAssessmentRepository;
 
         public QualityCertificateService(
-            QualityCertificateRepository qualityCertificateRepository,
-            BatchRepository batchRepository,
-            UserRepository userRepository,
-            AnalysisResultRepository analysisResultRepository,
-            QualityAssessmentRepository qualityAssessmentRepository)
+            IQualityCertificateRepository qualityCertificateRepository,
+            IBatchRepository batchRepository,
+            IUserRepository userRepository,
+            IAnalysisResultRepository analysisResultRepository,
+            IQualityAssessmentRepository qualityAssessmentRepository)
         {
             this.qualityCertificateRepository = qualityCertificateRepository;
             this.batchRepository = batchRepository;

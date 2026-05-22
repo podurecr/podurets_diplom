@@ -3,15 +3,16 @@ using Domain.Mappers;
 using Domain.Security;
 using Domain.Services.Interfaces;
 using Repositories.Entities;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 
 namespace Domain.Services.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly UserRepository userRepository;
+        private readonly IUserRepository userRepository;
 
-        public AuthService(UserRepository userService)
+        public AuthService(IUserRepository userService)
         {
             this.userRepository = userService;
         }

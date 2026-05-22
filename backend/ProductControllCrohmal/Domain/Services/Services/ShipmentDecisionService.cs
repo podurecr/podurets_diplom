@@ -4,6 +4,7 @@ using Domain.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Entities;
 using Repositories.Enums;
+using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,14 @@ namespace Domain.Services.Services
 {
     public class ShipmentDecisionService : IShipmentDecisionService
     {
-        private readonly ShipmentDecisionRepository shipmentDecisionRepository;
-        private readonly BatchRepository batchRepository;
-        private readonly UserRepository userRepository;
+        private readonly IShipmentDecisionRepository shipmentDecisionRepository;
+        private readonly IBatchRepository batchRepository;
+        private readonly IUserRepository userRepository;
 
         public ShipmentDecisionService(
-            ShipmentDecisionRepository shipmentDecisionRepository,
-            BatchRepository batchRepository,
-            UserRepository userRepository)
+            IShipmentDecisionRepository shipmentDecisionRepository,
+            IBatchRepository batchRepository,
+            IUserRepository userRepository)
         {
             this.shipmentDecisionRepository = shipmentDecisionRepository;
             this.batchRepository = batchRepository;
