@@ -1,0 +1,125 @@
+<div class="entity-list-page">
+  <div class="page-actions">
+    <div>
+      <h2>Партії продукції</h2>
+      <p>Перегляд зареєстрованих партій продукції та їх поточного статусу.</p>
+    </div>
+
+    <a routerLink="/batches/create" class="create-button"> + Створити партію </a>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Список партій</h3>
+
+      <button type="button" class="refresh-button" (click)="loadBatches()">Оновити</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">Завантаження партій...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="empty" *ngIf="!isLoading && !errorMessage && batches.length === 0">
+      Партії ще не зареєстровані.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && batches.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>№ партії</th>
+            <th>Продукція</th>
+            <th>Дата виробництва</th>
+            <th>Кількість</th>
+            <th>Лінія</th>
+            <th>Статус партії</th>
+            <th>Аналізи</th>
+            <th>Створено</th>
+            <th>Коментар</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let batch of batches">
+            <td class="batch-number">
+              {{ batch.batchNumber }}
+            </td>
+
+            <td>
+              {{ batch.product?.name || '—' }}
+            </td>
+
+            <td>
+              {{ formatDate(batch.productionDate) }}
+            </td>
+
+            <td>{{ batch.quantity }} {{ batch.unit }}</td>
+
+            <td>
+              {{ batch.productionLine || '—' }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(batch.status)">
+                {{ getStatusText(batch.status) }}
+              </span>
+            </td>
+
+            <td>
+              <span class="analysis-badge" [ngClass]="getAnalysisStatusClass(batch)">
+                {{ getAnalysisStatusText(batch) }}
+              </span>
+            </td>
+
+            <td>
+              {{ formatDate(batch.createdAt) }}
+            </td>
+
+            <td class="comment-cell">
+              {{ batch.comment || '—' }}
+            </td>
+
+            <td class="actions-cell">
+              <a class="action-button details" [routerLink]="['/batches', batch.id]"> Деталі </a>
+
+              <a
+                *ngIf="isAdmin"
+                class="action-button edit"
+                [routerLink]="['/batches', batch.id, 'edit']"
+              >
+                Редагувати
+              </a>
+
+              <a
+                *ngIf="canWorkWithAnalysis(batch)"
+                class="action-button analysis"
+                [routerLink]="['/analysis/work', batch.id]"
+              >
+                Аналізи
+              </a>
+
+              <a
+                *ngIf="canAssessQuality(batch)"
+                class="action-button quality"
+                [routerLink]="['/quality/batches', batch.id]"
+              >
+                Оцінка
+              </a>
+
+              <a
+                *ngIf="canCreateCertificate(batch)"
+                class="action-button certificate"
+                [routerLink]="['/certificates/batches', batch.id]"
+              >
+                Сертифікат
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

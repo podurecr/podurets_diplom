@@ -1,0 +1,175 @@
+.analysis-list-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.page-actions {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #f3f6fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(31, 41, 55, 0.05);
+}
+
+.page-actions h2 {
+  margin: 0;
+  font-size: 26px;
+  color: #1f2937;
+}
+
+.page-actions p {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.create-button {
+  background: #1f5f8b;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(31, 95, 139, 0.22);
+}
+
+.create-button:hover {
+  background: #16466a;
+}
+
+.table-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 20px rgba(31, 41, 55, 0.06);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.table-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.refresh-button {
+  background: #eef4f8;
+  color: #1f5f8b;
+  border: 1px solid #c8d9e6;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.loading,
+.empty,
+.error {
+  padding: 18px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.loading {
+  background: #eef4f8;
+  color: #1f5f8b;
+}
+
+.empty {
+  background: #f9fafb;
+  color: #6b7280;
+}
+
+.error {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+thead {
+  background: #f3f6fa;
+}
+
+th {
+  text-align: left;
+  padding: 14px 12px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 800;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #edf0f3;
+  color: #374151;
+  font-size: 14px;
+}
+
+tbody tr:hover {
+  background: #f8fbfd;
+}
+
+.batch-number,
+.parameter-name {
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-good {
+  background: #e8f7ee;
+  color: #237a3b;
+}
+
+.status-warning {
+  background: #fff7e6;
+  color: #a15c00;
+}
+
+.status-bad {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.status-info {
+  background: #eef4f8;
+  color: #1f5f8b;
+}
+
+.status-default {
+  background: #f3f4f6;
+  color: #6b7280;
+}

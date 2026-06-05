@@ -1,0 +1,40 @@
+.search-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  box-shadow: 0 6px 18px rgba(31, 41, 55, 0.05);
+  overflow: hidden;
+}
+
+.search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-field label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.search-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-field input:focus {
+  border-color: #1f5f8b;
+  box-shadow: 0 0 0 3px rgba(31, 95, 139, 0.12);
+}

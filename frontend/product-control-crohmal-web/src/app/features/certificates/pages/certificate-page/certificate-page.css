@@ -1,0 +1,415 @@
+.certificate-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.page-actions {
+  background: #f3f6fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(31, 41, 55, 0.05);
+}
+
+.page-actions h2 {
+  margin: 0;
+  font-size: 26px;
+  color: #1f2937;
+}
+
+.page-actions p {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.refresh-button {
+  background: #eef4f8;
+  color: #1f5f8b;
+  border: 1px solid #c8d9e6;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.refresh-button:hover {
+  background: #dcecf5;
+}
+
+.table-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 20px rgba(31, 41, 55, 0.06);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.table-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.table-header span {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+thead {
+  background: #f3f6fa;
+}
+
+th {
+  text-align: left;
+  padding: 14px 12px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 800;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #edf0f3;
+  color: #374151;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+tbody tr:hover {
+  background: #f8fbfd;
+}
+
+.batch-number {
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.conclusion-cell {
+  max-width: 280px;
+}
+
+.actions-column {
+  text-align: center;
+  width: 240px;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-approved {
+  background: #e8f7ee;
+  color: #237a3b;
+}
+
+.status-rejected {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.status-default {
+  background: #eef4f8;
+  color: #1f5f8b;
+}
+
+.icon-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-button {
+  background: #eef4f8;
+  color: #1f5f8b;
+  border: 1px solid #c8d9e6;
+}
+
+.action-button {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.generate-button {
+  background: #1f5f8b;
+  color: #ffffff;
+}
+
+.download-button {
+  background: #237a3b;
+  color: #ffffff;
+}
+
+.generate-button:hover {
+  background: #16466a;
+}
+
+.download-button:hover {
+  background: #1b5f2d;
+}
+
+.message,
+.empty {
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.loading {
+  background: #eef4f8;
+  color: #1f5f8b;
+}
+
+.empty {
+  background: #f9fafb;
+  color: #6b7280;
+}
+
+.error {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.success {
+  background: #e8f7ee;
+  color: #237a3b;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.danger-text {
+  color: #b42318;
+  font-weight: 800;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 24px;
+}
+
+.modal {
+  width: 700px;
+  max-width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1f2937;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.certificate-preview {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 24px;
+  background: #f9fafb;
+}
+
+.certificate-preview h2 {
+  text-align: center;
+  margin: 0 0 24px 0;
+  color: #1f2937;
+}
+
+.preview-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.preview-row:last-child {
+  border-bottom: none;
+}
+
+.preview-row strong {
+  color: #374151;
+}
+
+.modal-actions {
+  padding: 18px 22px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-button {
+  background: #eef4f8;
+  color: #1f5f8b;
+  border: 1px solid #c8d9e6;
+  padding: 10px 16px;
+  border-radius: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .page-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .actions-cell {
+    flex-direction: column;
+  }
+
+  .preview-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal {
+  width: 900px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.analysis-section {
+  margin-top: 22px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.analysis-section h3 {
+  margin: 0 0 14px 0;
+  color: #1f2937;
+  font-size: 18px;
+}
+
+.analysis-table-wrapper {
+  overflow-x: auto;
+}
+
+.analysis-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+.analysis-table th {
+  background: #f3f6fa;
+}
+
+.analysis-table th,
+.analysis-table td {
+  padding: 12px;
+  border-bottom: 1px solid #edf0f3;
+  text-align: left;
+  font-size: 14px;
+}
+
+.shipment-allow-button {
+  background: #237a3b;
+  color: #ffffff;
+}
+
+.shipment-allow-button:hover {
+  background: #1b5f2d;
+}
+
+.shipment-deny-button {
+  background: #b42318;
+  color: #ffffff;
+}
+
+.shipment-deny-button:hover {
+  background: #8f1b13;
+}

@@ -1,0 +1,20 @@
+.card {
+  max-width: 760px;
+}
+
+.card h3 {
+  font-size: 22px;
+  margin-bottom: 18px;
+  color: #1f5f8b;
+}
+
+.card p {
+  color: #1f2937;
+  margin: 12px 0;
+}
+
+.card b {
+  display: inline-block;
+  min-width: 150px;
+  color: #6b7280;
+}

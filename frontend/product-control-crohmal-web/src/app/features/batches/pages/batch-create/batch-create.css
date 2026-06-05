@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
+.card {
+  max-width: 900px;
+}
+
+.page h2 {
+  margin-bottom: 4px;
+}
+
+.page > p {
+  margin-bottom: 22px;
+}
+
+.form-actions button:first-child {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.form-actions button:first-child:hover {
+  background: #d1d5db;
+}

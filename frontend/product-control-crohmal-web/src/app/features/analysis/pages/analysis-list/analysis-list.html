@@ -1,0 +1,78 @@
+<div class="analysis-list-page">
+  <div class="page-actions">
+    <div>
+      <h2>Лабораторні аналізи</h2>
+      <p>Перегляд результатів лабораторного контролю партій продукції.</p>
+    </div>
+
+    <a routerLink="/analysis/work" class="create-button"> Робота з аналізами </a>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Список результатів аналізів</h3>
+
+      <button type="button" class="refresh-button" (click)="loadAnalysisResults()">Оновити</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">Завантаження результатів аналізів...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="empty" *ngIf="!isLoading && !errorMessage && analysisResults.length === 0">
+      Результати аналізів ще не створені.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && analysisResults.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Партія</th>
+            <th>Продукт</th>
+            <th>Показник</th>
+            <th>Фактичне значення</th>
+            <th>Результат</th>
+            <th>Дата аналізу</th>
+            <th>Лаборант</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let result of analysisResults">
+            <td class="batch-number">
+              {{ result.batch?.batchNumber || '—' }}
+            </td>
+
+            <td>
+              {{ result.batch?.product?.name || '—' }}
+            </td>
+
+            <td class="parameter-name">
+              {{ result.qualityParameter?.name || '—' }}
+            </td>
+
+            <td>
+              {{ getValue(result) }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getResultClass(result.resultStatus)">
+                {{ getResultText(result.resultStatus) }}
+              </span>
+            </td>
+
+            <td>
+              {{ formatDate(result.analyzedAt) }}
+            </td>
+
+            <td>
+              {{ result.enteredByUser?.fullName || '—' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

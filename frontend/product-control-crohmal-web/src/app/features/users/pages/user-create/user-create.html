@@ -1,0 +1,92 @@
+<div class="user-create-page">
+  <div class="page-header">
+    <div>
+      <h2>{{ isEditMode ? 'Редагування користувача' : 'Створення користувача' }}</h2>
+
+      <p>
+        {{
+          isEditMode
+            ? 'Зміна даних користувача, ролі та статусу доступу.'
+            : 'Створення нового користувача системи.'
+        }}
+      </p>
+    </div>
+
+    <a routerLink="/login" class="back-link">До входу</a>
+  </div>
+
+  <form class="card" [formGroup]="userForm" (ngSubmit)="saveUser()">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>ПІБ користувача</label>
+        <input type="text" formControlName="FullName" placeholder="Наприклад: Іван Петренко" />
+
+        <small *ngIf="userForm.get('FullName')?.touched && userForm.get('FullName')?.invalid">
+          Поле ПІБ є обов’язковим.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Логін</label>
+        <input type="text" formControlName="Login" placeholder="Наприклад: lab1" />
+
+        <small *ngIf="userForm.get('Login')?.touched && userForm.get('Login')?.invalid">
+          Логін є обов’язковим.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" formControlName="Email" placeholder="user@gmail.com" />
+
+        <small *ngIf="userForm.get('Email')?.touched && userForm.get('Email')?.invalid">
+          Введіть коректний email.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Пароль</label>
+        <input type="password" formControlName="PasswordHash" placeholder="Пароль користувача" />
+
+        <small
+          *ngIf="userForm.get('PasswordHash')?.touched && userForm.get('PasswordHash')?.invalid"
+        >
+          Пароль є обов’язковим.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Роль</label>
+        <select formControlName="RoleId">
+          <option *ngFor="let role of roles" [value]="role.id">
+            {{ role.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-field checkbox-field">
+        <label>
+          <input type="checkbox" formControlName="IsActive" />
+          Активний користувач
+        </label>
+      </div>
+    </div>
+
+    <div class="messages">
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="isLoading">
+        {{
+          isEditMode
+            ? 'Редагувати користувача'
+            : isLoading
+              ? 'Створення...'
+              : 'Створити користувача'
+        }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,42 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div>
+        <strong>Quality Trace</strong>
+        <span>Облік партій</span>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <a
+        *ngFor="let item of menuItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+        [hidden]="!canShowMenuItem(item)"
+      >
+        {{ item.label }}
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <h1>Система простежуваності партій продукції</h1>
+        <p>Облік партій, лабораторних аналізів та сертифікатів якості</p>
+      </div>
+
+      <div class="user-info">
+        <span>{{ currentUser?.fullName }}</span>
+        <small>{{ currentRole }}</small>
+        <button type="button" (click)="logout()">Вийти</button>
+      </div>
+    </header>
+
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

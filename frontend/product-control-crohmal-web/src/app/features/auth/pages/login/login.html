@@ -1,0 +1,55 @@
+<div class="login-page">
+  <div class="login-info">
+    <div class="logo">Q</div>
+
+    <h1>Система простежуваності партій продукції</h1>
+
+    <p>
+      Веб-додаток для обліку партій продукції, внесення результатів
+      лабораторних аналізів та формування сертифіката якості.
+    </p>
+  </div>
+
+  <div class="login-card">
+    <h2>Вхід до системи</h2>
+    <p class="subtitle">Введіть логін і пароль користувача</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Логін</label>
+        <input
+          type="text"
+          formControlName="login"
+          placeholder="Наприклад: quality.manager"
+        />
+
+        <div class="validation"
+             *ngIf="loginForm.controls.login.touched && loginForm.controls.login.invalid">
+          Вкажіть логін
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Пароль</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Введіть пароль"
+        />
+
+        <div class="validation"
+             *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+          Вкажіть пароль
+        </div>
+      </div>
+
+      <div class="error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Вхід...' : 'Увійти' }}
+      </button>
+    </form>
+  </div>
+</div>

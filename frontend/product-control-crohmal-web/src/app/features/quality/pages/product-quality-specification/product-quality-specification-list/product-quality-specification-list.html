@@ -1,0 +1,86 @@
+<div class="entity-list-page">
+  <div class="page-actions">
+    <div>
+      <h2>Специфікації якості продуктів</h2>
+      <p>Перелік нормативних показників якості, які прив’язані до конкретних продуктів.</p>
+    </div>
+
+    <a routerLink="/product-quality-specifications/create" class="create-button">
+      + Додати специфікацію
+    </a>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Список специфікацій</h3>
+
+      <button type="button" class="refresh-button" (click)="loadSpecifications()">Оновити</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">Завантаження специфікацій якості...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="empty" *ngIf="!isLoading && !errorMessage && specifications.length === 0">
+      Специфікації якості ще не створені.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && specifications.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Продукт</th>
+            <th>Код продукту</th>
+            <th>Показник якості</th>
+            <th>Одиниця</th>
+            <th>Норма</th>
+            <th>Обов’язковий</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let specification of specifications">
+            <td class="product-name">
+              {{ specification.product?.name || '—' }}
+            </td>
+
+            <td>
+              {{ specification.product?.code || '—' }}
+            </td>
+
+            <td class="parameter-name">
+              {{ specification.qualityParameter?.name || '—' }}
+            </td>
+
+            <td>
+              {{ specification.qualityParameter?.unit || '—' }}
+            </td>
+
+            <td class="norm-cell">
+              {{ getNormText(specification) }}
+            </td>
+
+            <td>
+              <span class="required-badge" [ngClass]="getRequiredClass(specification.isRequired)">
+                {{ getRequiredText(specification.isRequired) }}
+              </span>
+            </td>
+
+            <td class="actions-cell">
+              <a
+                class="edit-button"
+                [routerLink]="['/product-quality-specifications', specification.id, 'edit']"
+                title="Редагувати специфікацію"
+              >
+                ✎
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

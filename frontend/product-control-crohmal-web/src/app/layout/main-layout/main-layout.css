@@ -1,0 +1,104 @@
+.layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  background: #f3f6fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.sidebar {
+  background: #153e5c;
+  color: white;
+  padding: 24px 18px;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: white;
+  color: #1f5f8b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.brand span {
+  display: block;
+  font-size: 13px;
+  color: #b8d4e8;
+  margin-top: 3px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu a {
+  color: #dbeafe;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.menu a.active,
+.menu a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 18px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #1f2937;
+}
+
+.topbar p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.user-info button {
+  border: none;
+  background: #e5e7eb;
+  padding: 9px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.page-content {
+  padding: 28px;
+}

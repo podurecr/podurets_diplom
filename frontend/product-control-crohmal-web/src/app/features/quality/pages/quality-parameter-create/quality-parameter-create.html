@@ -1,0 +1,53 @@
+<div class="quality-parameter-create-page">
+  <div class="page-header">
+    <div>
+      <h2>Створення показника якості</h2>
+      <p>
+        Додайте новий показник, який надалі буде використовуватися у специфікаціях продуктів та
+        лабораторних аналізах.
+      </p>
+    </div>
+
+    <a routerLink="/quality-parameters" class="back-link"> До списку показників </a>
+  </div>
+
+  <form class="form-card" [formGroup]="parameterForm" (ngSubmit)="createQualityParameter()">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Назва показника</label>
+        <input type="text" formControlName="Name" placeholder="Наприклад: Вологість" />
+
+        <small *ngIf="parameterForm.controls.Name.touched && parameterForm.controls.Name.invalid">
+          Назва показника є обов’язковою.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Одиниця вимірювання</label>
+        <input type="text" formControlName="Unit" placeholder="Наприклад: %, pH, мг/кг" />
+
+        <small *ngIf="parameterForm.controls.Unit.touched && parameterForm.controls.Unit.invalid">
+          Одиниця вимірювання не повинна перевищувати допустиму довжину.
+        </small>
+      </div>
+
+      <div class="form-field checkbox-field">
+        <label>
+          <input type="checkbox" formControlName="IsActive" />
+          Активний показник
+        </label>
+      </div>
+    </div>
+
+    <div class="messages">
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Створення...' : 'Створити показник' }}
+      </button>
+    </div>
+  </form>
+</div>

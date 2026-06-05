@@ -1,0 +1,94 @@
+<div class="page">
+  <h2>Створення партії продукції</h2>
+  <p>Форма реєстрації нової партії після завершення виробництва.</p>
+
+  <div class="card">
+    <form #batchForm="ngForm" (ngSubmit)="saveBatch()">
+      <div class="form-grid">
+        <div>
+          <label>Номер партії</label>
+          <input
+            name="batchNumber"
+            [(ngModel)]="batch.batchNumber"
+            placeholder="Наприклад: KP-2026-001"
+            required
+          />
+        </div>
+
+        <div>
+          <label>Продукція</label>
+
+          <select
+            name="productId"
+            [(ngModel)]="batch.productId"
+            (ngModelChange)="onProductChange()"
+            [disabled]="isProductsLoading || products.length === 0"
+            required
+          >
+            <option [ngValue]="null" disabled>Оберіть продукт</option>
+
+            <option *ngFor="let product of products" [ngValue]="product.id">
+              {{ product.code }} — {{ product.name }}
+            </option>
+          </select>
+
+          <small class="field-hint" *ngIf="isProductsLoading"> Завантаження продуктів... </small>
+
+          <small class="field-error" *ngIf="productsErrorMessage">
+            {{ productsErrorMessage }}
+          </small>
+        </div>
+
+        <div>
+          <label>Дата виготовлення</label>
+          <input type="date" name="productionDate" [(ngModel)]="batch.productionDate" required />
+        </div>
+
+        <div>
+          <label>Кількість</label>
+          <input
+            type="number"
+            name="quantity"
+            [(ngModel)]="batch.quantity"
+            placeholder="2500"
+            min="0.01"
+            step="0.01"
+            required
+          />
+        </div>
+
+        <div>
+          <label>Одиниця вимірювання</label>
+          <input name="unit" [(ngModel)]="batch.unit" placeholder="кг" readonly />
+        </div>
+
+        <div>
+          <label>Виробнича лінія</label>
+          <input name="productionLine" [(ngModel)]="batch.productionLine" placeholder="Лінія №1" />
+        </div>
+      </div>
+
+      <div>
+        <label>Коментар</label>
+        <textarea
+          name="comment"
+          [(ngModel)]="batch.comment"
+          placeholder="Додаткова інформація про партію"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="form-error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" routerLink="/batches">Скасувати</button>
+
+        <button type="submit" [disabled]="batchForm.invalid || isSaving">
+          {{ isSaving ? 'Збереження...' : 'Зберегти' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

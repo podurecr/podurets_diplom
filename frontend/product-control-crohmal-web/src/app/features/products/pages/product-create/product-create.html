@@ -1,0 +1,89 @@
+<div class="product-create-page">
+  <div class="page-header">
+    <div>
+      <h2>Створення продукту</h2>
+      <p>
+        Додайте продукт, який надалі буде використовуватися під час створення партій продукції.
+      </p>
+    </div>
+
+    <a routerLink="/batches" class="back-link">
+      До списку партій
+    </a>
+  </div>
+
+  <form class="form-card" [formGroup]="productForm" (ngSubmit)="createProduct()">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Код продукту</label>
+        <input
+          type="text"
+          formControlName="Code"
+          placeholder="Наприклад: STARCH-01"
+        />
+
+        <small *ngIf="productForm.controls.Code.touched && productForm.controls.Code.invalid">
+          Код продукту є обов’язковим.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Назва продукту</label>
+        <input
+          type="text"
+          formControlName="Name"
+          placeholder="Наприклад: Крохмаль картопляний"
+        />
+
+        <small *ngIf="productForm.controls.Name.touched && productForm.controls.Name.invalid">
+          Назва продукту є обов’язковою.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label>Одиниця вимірювання</label>
+        <select formControlName="Unit">
+          <option value="кг">кг</option>
+          <option value="т">т</option>
+          <option value="л">л</option>
+          <option value="шт">шт</option>
+        </select>
+
+        <small *ngIf="productForm.controls.Unit.touched && productForm.controls.Unit.invalid">
+          Одиниця вимірювання є обов’язковою.
+        </small>
+      </div>
+
+      <div class="form-field checkbox-field">
+        <label>
+          <input type="checkbox" formControlName="IsActive" />
+          Активний продукт
+        </label>
+      </div>
+
+      <div class="form-field full-width">
+        <label>Опис продукту</label>
+        <textarea
+          rows="4"
+          formControlName="Description"
+          placeholder="Короткий опис продукту або особливості використання"
+        ></textarea>
+
+        <small *ngIf="productForm.controls.Description.touched && productForm.controls.Description.invalid">
+          Опис не повинен перевищувати допустиму довжину.
+        </small>
+      </div>
+    </div>
+
+    <div class="messages">
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Створення...' : 'Створити продукт' }}
+      </button>
+    </div>
+  </form>
+</div>

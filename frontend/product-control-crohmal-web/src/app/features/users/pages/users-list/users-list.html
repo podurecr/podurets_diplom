@@ -1,0 +1,97 @@
+<div class="entity-list-page">
+  <div class="page-actions">
+    <div>
+      <h2>Користувачі системи</h2>
+      <p>Керування користувачами та їх ролями.</p>
+    </div>
+
+    <a routerLink="/users/create" class="create-button"> + Створити користувача </a>
+  </div>
+
+  <div class="search-card">
+    <div class="search-field">
+      <label>Пошук користувача за ПІБ</label>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Введіть ім’я або прізвище користувача"
+      />
+    </div>
+
+    <button type="button" class="clear-search-button" *ngIf="searchTerm" (click)="clearSearch()">
+      Очистити
+    </button>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Список користувачів</h3>
+
+      <button type="button" class="refresh-button" (click)="loadUsers()">Оновити</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">Завантаження користувачів...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="empty" *ngIf="!isLoading && !errorMessage && users.length === 0">
+      Користувачі ще не створені.
+    </div>
+
+    <div
+      class="empty"
+      *ngIf="!isLoading && !errorMessage && users.length > 0 && filteredUsers.length === 0"
+    >
+      Користувачів за вказаним ПІБ не знайдено.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && users.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ПІБ</th>
+            <th>Логін</th>
+            <th>Роль</th>
+            <th>Статус</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of filteredUsers">
+            <td>
+              {{ user.fullName }}
+            </td>
+
+            <td class="user-login">
+              {{ user.login }}
+            </td>
+
+            <td>
+              {{ user.role.name }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(user.isActive)">
+                {{ getStatusText(user.isActive) }}
+              </span>
+            </td>
+
+            <td class="actions-cell">
+              <a
+                class="edit-button"
+                [routerLink]="['/users', user.id, 'edit']"
+                title="Редагувати користувача"
+              >
+                ✎
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

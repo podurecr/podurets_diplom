@@ -1,0 +1,107 @@
+@import './app/shared/styles/entity-list.css';
+
+/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+}
+
+.page h2 {
+  margin: 0;
+  font-size: 26px;
+  color: #1f2937;
+}
+
+.page p {
+  color: #6b7280;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+button {
+  background: #1f5f8b;
+  color: white;
+  border: none;
+  padding: 11px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 13px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+th {
+  background: #f9fafb;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.ok {
+  background: #eaf7ef;
+  color: #2b8a3e;
+}
+
+.status.warning {
+  background: #fff6df;
+  color: #c77700;
+}
+
+.status.bad {
+  background: #fdecec;
+  color: #b42318;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 22px;
+}

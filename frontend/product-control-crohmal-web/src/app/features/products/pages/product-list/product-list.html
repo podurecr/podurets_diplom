@@ -1,0 +1,79 @@
+<div class="entity-list-page">
+  <div class="page-actions">
+    <div>
+      <h2>Продукти</h2>
+      <p>Перегляд продукції, яка використовується під час створення партій.</p>
+    </div>
+
+    <a routerLink="/products/create" class="create-button"> + Створити продукт </a>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Список продуктів</h3>
+
+      <button type="button" class="refresh-button" (click)="loadProducts()">Оновити</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading === true">Завантаження продуктів...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="empty" *ngIf="!isLoading && !errorMessage && products.length === 0">
+      Продукти ще не створені.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && products.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Код</th>
+            <th>Назва продукту</th>
+            <th>Одиниця вимірювання</th>
+            <th>Опис</th>
+            <th>Статус</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td class="product-code">
+              {{ product.code }}
+            </td>
+
+            <td>
+              {{ product.name }}
+            </td>
+
+            <td>
+              {{ product.unit }}
+            </td>
+
+            <td class="description-cell">
+              {{ product.description || '—' }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(product.isActive)">
+                {{ getStatusText(product.isActive) }}
+              </span>
+            </td>
+
+            <td class="actions-cell">
+              <a
+                class="edit-button"
+                [routerLink]="['/products', product.id, 'edit']"
+                title="Редагувати продукт"
+              >
+                ✎
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

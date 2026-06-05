@@ -1,0 +1,170 @@
+<div class="analysis-work-page">
+  <div class="page-header">
+    <div>
+      <h2>Робота з аналізами</h2>
+      <p>Внесення фактичних результатів лабораторного контролю для обраної партії.</p>
+    </div>
+
+    <a routerLink="/analysis" class="back-link"> До списку аналізів </a>
+  </div>
+
+  <div class="work-card">
+    <div class="batch-selector">
+      <div class="form-field">
+        <label>Оберіть партію</label>
+        <select
+          [(ngModel)]="selectedBatchId"
+          (ngModelChange)="onBatchChange()"
+          [disabled]="isLoading || isSaving"
+        >
+          <option [ngValue]="null">Оберіть партію</option>
+
+          <option *ngFor="let batch of batches" [ngValue]="batch.id">
+            {{ batch.batchNumber }} — {{ batch.product?.name || 'Без продукту' }}
+          </option>
+        </select>
+      </div>
+
+      <div class="batch-info" *ngIf="selectedBatch">
+        <div>
+          <strong>Продукт:</strong>
+          {{ selectedBatch.product?.name || '—' }}
+        </div>
+
+        <div>
+          <strong>Дата виробництва:</strong>
+          {{ formatDate(selectedBatch.productionDate) }}
+        </div>
+
+        <div>
+          <strong>Статус аналізів:</strong>
+          <span class="lock-badge" [class.locked]="selectedBatch.isAnalysisCompleted">
+            {{ selectedBatch.isAnalysisCompleted ? 'Завершено' : 'В роботі' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-block" *ngIf="selectedBatch && rows.length > 0">
+      <div class="progress-info">
+        <span>Заповнено {{ filledCount }} з {{ totalCount }} показників</span>
+        <strong>{{ progressPercent }}%</strong>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progressPercent"></div>
+      </div>
+    </div>
+
+    <div class="locked-message" *ngIf="isFormLocked">
+      Результати аналізів для цієї партії вже завершені. Редагування доступне тільки адміністратору.
+    </div>
+
+    <div class="loading" *ngIf="isLoading">Завантаження даних для аналізу...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="success" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <div class="empty" *ngIf="selectedBatch && !isLoading && rows.length === 0">
+      Для продукту цієї партії не налаштовано специфікації якості.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && rows.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Показник</th>
+            <th>Норма</th>
+            <th>Фактичне значення</th>
+            <th>Коментар</th>
+            <th>Результат аналізу</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let row of rows">
+            <td class="parameter-name">
+              {{ row.parameterName }}
+              <span class="required-mark" *ngIf="row.isRequired">*</span>
+            </td>
+
+            <td class="norm-cell">
+              {{ getNormText(row) }}
+            </td>
+
+            <td>
+              <input
+                *ngIf="!isTextRow(row)"
+                type="number"
+                class="value-input"
+                [(ngModel)]="row.numericValue"
+                (ngModelChange)="recalculateRow(row)"
+                [disabled]="isFormLocked || isSaving"
+                placeholder="Введіть значення"
+              />
+
+              <input
+                *ngIf="isTextRow(row)"
+                type="text"
+                class="value-input"
+                [(ngModel)]="row.textValue"
+                (ngModelChange)="recalculateRow(row)"
+                [disabled]="isFormLocked || isSaving"
+                placeholder="Введіть текстовий результат"
+              />
+            </td>
+
+            <td>
+              <input
+                type="text"
+                class="comment-input"
+                [(ngModel)]="row.comment"
+                [disabled]="isFormLocked || isSaving"
+                placeholder="Коментар"
+              />
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getResultClass(row)">
+                {{ getResultText(row) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-actions" *ngIf="selectedBatch && rows.length > 0">
+      <a routerLink="/analysis" class="cancel-button"> Назад </a>
+
+      <button
+        type="button"
+        class="save-button"
+        (click)="saveAnalysisResults()"
+        [disabled]="isSaving || isFinishing || isFormLocked"
+      >
+        {{ isSaving ? 'Збереження...' : 'Зберегти результати аналізів' }}
+      </button>
+
+      <button
+        type="button"
+        class="finish-button"
+        (click)="finishAnalysis()"
+        [disabled]="isFinishing || isFormLocked || selectedBatch?.isAnalysisCompleted"
+      >
+        {{
+          selectedBatch?.isAnalysisCompleted
+            ? 'Аналіз завершено'
+            : isFinishing
+              ? 'Завершення...'
+              : 'Завершити аналіз'
+        }}
+      </button>
+    </div>
+  </div>
+</div>

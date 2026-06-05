@@ -1,0 +1,71 @@
+<div class="entity-list-page">
+  <div class="page-actions">
+    <div>
+      <h2>Показники якості</h2>
+      <p>Перегляд показників, які використовуються для лабораторного контролю партій продукції.</p>
+    </div>
+
+    <a routerLink="/quality-parameters/create" class="create-button"> + Створити показник </a>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Список показників якості</h3>
+
+      <button type="button" class="refresh-button" (click)="loadQualityParameters()">
+        Оновити
+      </button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">Завантаження показників якості...</div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="empty" *ngIf="!isLoading && !errorMessage && qualityParameters.length === 0">
+      Показники якості ще не створені.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && qualityParameters.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Назва показника</th>
+            <th>Одиниця вимірювання</th>
+            <th>Статус</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let parameter of qualityParameters">
+            <td class="parameter-name">
+              {{ parameter.name }}
+            </td>
+
+            <td>
+              {{ parameter.unit || '—' }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(parameter.isActive)">
+                {{ getStatusText(parameter.isActive) }}
+              </span>
+            </td>
+
+            <td class="actions-cell">
+              <a
+                class="edit-button"
+                [routerLink]="['/quality-parameters', parameter.id, 'edit']"
+                title="Редагувати показник"
+              >
+                ✎
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

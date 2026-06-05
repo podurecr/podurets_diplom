@@ -1,0 +1,77 @@
+<div class="shipment-page">
+  <div class="page-header">
+    <div>
+      <h2>Партії для відвантаження</h2>
+      <p>
+        Список партій, які пройшли контроль якості та можуть бути передані на склад для
+        відвантаження.
+      </p>
+    </div>
+
+    <button type="button" class="refresh-button" (click)="loadBatches()">Оновити</button>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">Завантаження партій для відвантаження...</div>
+
+  <div class="error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="empty" *ngIf="!isLoading && !errorMessage && batches.length === 0">
+    Немає партій, доступних для відвантаження.
+  </div>
+
+  <div class="table-card" *ngIf="!isLoading && batches.length > 0">
+    <div class="table-header">
+      <h3>Список партій</h3>
+      <p>Для відвантаження доступні тільки придатні партії з сертифікатом якості.</p>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>№ партії</th>
+            <th>Продукція</th>
+            <th>Дата виробництва</th>
+            <th>Кількість</th>
+            <th>Статус</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let batch of batches">
+            <td class="batch-number">
+              {{ batch.batchNumber }}
+            </td>
+
+            <td>
+              {{ batch.product?.name || '—' }}
+            </td>
+
+            <td>
+              {{ formatDate(batch.productionDate) }}
+            </td>
+
+            <td>{{ batch.quantity }} {{ batch.unit }}</td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(batch.status)">
+                {{ getStatusText(batch.status) }}
+              </span>
+            </td>
+
+            <td class="actions-cell">
+              <a class="action-button details" [routerLink]="['/batches', batch.id]"> Деталі </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

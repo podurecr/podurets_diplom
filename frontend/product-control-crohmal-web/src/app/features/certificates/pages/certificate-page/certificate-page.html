@@ -1,0 +1,237 @@
+<div class="certificate-page">
+  <div class="page-actions">
+    <div>
+      <h2>Сертифікати якості</h2>
+      <p>
+        Перегляд сформованих сертифікатів якості та прийняття рішення щодо відвантаження партій
+        продукції.
+      </p>
+    </div>
+
+    <button type="button" class="refresh-button" (click)="loadData()">Оновити</button>
+  </div>
+
+  <div class="message loading" *ngIf="isLoading">Завантаження даних...</div>
+
+  <div class="message error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="message success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="table-card" *ngIf="!isLoading">
+    <div class="table-header">
+      <h3>Сформовані сертифікати</h3>
+      <span>Усього: {{ rows.length }}</span>
+    </div>
+
+    <div class="empty" *ngIf="rows.length === 0">Сформовані сертифікати якості відсутні.</div>
+
+    <div class="table-wrapper" *ngIf="rows.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>№ сертифіката</th>
+            <th>№ партії</th>
+            <th>Продукція</th>
+            <th>Дата виробництва</th>
+            <th>Статус партії</th>
+            <th>Висновок</th>
+            <th>Дата створення</th>
+            <th>Рішення складу</th>
+            <th class="actions-column">Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let row of rows">
+            <td class="batch-number">
+              {{ row.certificate.certificateNumber }}
+            </td>
+
+            <td>
+              {{ row.batch.batchNumber }}
+            </td>
+
+            <td>
+              {{ getProductName(row.batch) }}
+            </td>
+
+            <td>
+              {{ formatDate(row.batch.productionDate) }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getBatchStatusClass(row.batch)">
+                {{ getBatchStatusText(row.batch) }}
+              </span>
+            </td>
+
+            <td class="conclusion-cell">
+              {{ row.certificate.conclusion }}
+            </td>
+
+            <td>
+              {{ formatDate(row.certificate.createdAt) }}
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getShipmentDecisionClass(row.shipmentDecision)">
+                {{ getShipmentDecisionText(row.shipmentDecision) }}
+              </span>
+            </td>
+
+            <td class="actions-cell">
+              <button
+                type="button"
+                class="icon-button view-button"
+                title="Переглянути сертифікат"
+                (click)="previewCertificate(row)"
+              >
+                👁
+              </button>
+
+              <button
+                *ngIf="canManageShipment"
+                type="button"
+                class="action-button shipment-allow-button"
+                title="Дозволити відвантаження"
+                (click)="allowShipment(row)"
+              >
+                Дозволити
+              </button>
+
+              <button
+                *ngIf="canManageShipment"
+                type="button"
+                class="action-button shipment-deny-button"
+                title="Заборонити відвантаження"
+                (click)="denyShipment(row)"
+              >
+                Заборонити
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="selectedBatch" (click)="closePreview()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Детальна інформація про сертифікат</h3>
+
+        <button type="button" class="close-button" (click)="closePreview()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="certificate-preview">
+          <h2>СЕРТИФІКАТ ЯКОСТІ</h2>
+
+          <div class="preview-row">
+            <strong>№ сертифіката:</strong>
+            <span>{{ selectedCertificate?.certificateNumber }}</span>
+          </div>
+
+          <div class="preview-row">
+            <strong>Партія:</strong>
+            <span>{{ selectedBatch.batchNumber }}</span>
+          </div>
+
+          <div class="preview-row">
+            <strong>Продукція:</strong>
+            <span>{{ getProductName(selectedBatch) }}</span>
+          </div>
+
+          <div class="preview-row">
+            <strong>Дата виробництва:</strong>
+            <span>{{ formatDate(selectedBatch.productionDate) }}</span>
+          </div>
+
+          <div class="preview-row">
+            <strong>Статус партії:</strong>
+            <span class="status-badge" [ngClass]="getBatchStatusClass(selectedBatch)">
+              {{ getBatchStatusText(selectedBatch) }}
+            </span>
+          </div>
+
+          <div class="preview-row">
+            <strong>Висновок:</strong>
+            <span>{{ selectedCertificate?.conclusion }}</span>
+          </div>
+
+          <div class="preview-row">
+            <strong>Дата створення:</strong>
+            <span>{{ formatDate(selectedCertificate?.createdAt) }}</span>
+          </div>
+        </div>
+
+        <div class="analysis-section">
+          <h3>Результати лабораторних аналізів</h3>
+
+          <div class="message loading" *ngIf="isLoadingDetails">
+            Завантаження результатів аналізів...
+          </div>
+
+          <div class="empty" *ngIf="!isLoadingDetails && selectedAnalysisResults.length === 0">
+            Результати аналізів відсутні.
+          </div>
+
+          <div
+            class="analysis-table-wrapper"
+            *ngIf="!isLoadingDetails && selectedAnalysisResults.length > 0"
+          >
+            <table class="analysis-table">
+              <thead>
+                <tr>
+                  <th>Показник</th>
+                  <th>Фактичне значення</th>
+                  <th>Результат</th>
+                  <th>Коментар</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let result of selectedAnalysisResults">
+                  <td class="batch-number">
+                    {{ result.qualityParameter?.name || '—' }}
+                  </td>
+
+                  <td>
+                    {{ getAnalysisValue(result) }}
+                  </td>
+
+                  <td>
+                    <span class="status-badge" [ngClass]="getAnalysisStatusClass(result)">
+                      {{ getAnalysisStatusText(result) }}
+                    </span>
+                  </td>
+
+                  <td>
+                    {{ result.comment || '—' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-button" (click)="closePreview()">Закрити</button>
+
+        <button
+          *ngIf="selectedCertificate"
+          type="button"
+          class="download-button action-button"
+          (click)="downloadCertificate(selectedCertificate)"
+        >
+          Завантажити PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

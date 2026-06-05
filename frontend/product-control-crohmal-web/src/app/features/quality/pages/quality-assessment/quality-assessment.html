@@ -1,0 +1,183 @@
+<div class="quality-page">
+  <div class="page-header">
+    <div>
+      <h2>Контроль якості</h2>
+      <p>Оцінка відповідності партії встановленим вимогам.</p>
+    </div>
+
+    <a routerLink="/batches" class="back-link"> ← До списку партій </a>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">Завантаження даних для оцінки якості...</div>
+
+  <div class="error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="quality-content" *ngIf="!isLoading && batch">
+    <div class="summary-card">
+      <h3>Інформація про партію</h3>
+
+      <div class="summary-grid">
+        <div>
+          <span>№ партії</span>
+          <strong>{{ batch.batchNumber }}</strong>
+        </div>
+
+        <div>
+          <span>Продукт</span>
+          <strong>{{ batch.product?.name || '—' }}</strong>
+        </div>
+
+        <div>
+          <span>Дата виробництва</span>
+          <strong>{{ formatDate(batch.productionDate) }}</strong>
+        </div>
+
+        <div>
+          <span>Кількість</span>
+          <strong>{{ batch.quantity }} {{ batch.unit }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>Результати лабораторного аналізу</h3>
+          <p>
+            Перегляд фактичних значень, норм специфікації та ручна оцінка кожного показника
+            інженером якості.
+          </p>
+        </div>
+      </div>
+
+      <div class="empty" *ngIf="rows.length === 0">
+        Для цієї партії немає результатів аналізів або специфікацій.
+      </div>
+
+      <div class="table-wrapper" *ngIf="rows.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Показник</th>
+              <th>Норма</th>
+              <th>Фактичний результат</th>
+              <th>Оцінка інженера</th>
+              <th>Підсумок</th>
+              <th>Коментар лаборанта</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let row of rows">
+              <td class="parameter-name">
+                {{ row.parameterName }}
+              </td>
+
+              <td>
+                {{ getNormText(row) }}
+              </td>
+
+              <td>
+                {{ getFactValue(row) }}
+              </td>
+
+              <td>
+                <select
+                  class="engineer-decision-select"
+                  [ngModel]="getEngineerDecisionValue(row)"
+                  (ngModelChange)="onEngineerDecisionChange(row, $event)"
+                  [disabled]="isSaving || isAssessmentFinal"
+                >
+                  <option value="">Оберіть оцінку</option>
+                  <option value="true">В нормі</option>
+                  <option value="false">Не в нормі</option>
+                </select>
+              </td>
+
+              <td>
+                <span class="result-badge" [ngClass]="getResultClass(row)">
+                  {{ getResultText(row) }}
+                </span>
+              </td>
+
+              <td class="comment-cell">
+                {{ row.comment || '—' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card assessment-card">
+      <div class="assessment-header">
+        <div>
+          <h3>Оцінка партії інженером якості</h3>
+          <p>
+            Збережіть оцінку як чернетку або фіналізуйте її, щоб заборонити подальше редагування.
+          </p>
+        </div>
+
+        <span class="final-status-badge" *ngIf="isAssessmentFinal"> Оцінку фіналізовано </span>
+      </div>
+
+      <div class="final-message" *ngIf="isAssessmentFinal">
+        Оцінка якості вже фіналізована. Редагування статусу та висновку недоступне.
+      </div>
+
+      <div class="form-field">
+        <label>Статус партії</label>
+
+        <select [(ngModel)]="selectedStatus" [disabled]="isSaving">
+          <option value="Approved">Придатна</option>
+          <option value="Rejected">Брак</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Висновок</label>
+
+        <textarea
+          rows="5"
+          [(ngModel)]="conclusion"
+          [disabled]="isSaving || isAssessmentFinal"
+          placeholder="Вкажіть висновок щодо якості партії"
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/batches" class="cancel-button"> Скасувати </a>
+
+        <button
+          type="button"
+          class="save-button secondary-save"
+          (click)="saveAssessment()"
+          [disabled]="isSaving || isAssessmentFinal"
+        >
+          {{
+            isAssessmentFinal
+              ? 'Оцінку фіналізовано'
+              : isSaving
+                ? 'Збереження...'
+                : 'Зберегти оцінку'
+          }}
+        </button>
+
+        <button
+          type="button"
+          class="save-button finalize-button"
+          (click)="finalizeAssessment()"
+          [disabled]="isSaving || isAssessmentFinal"
+        >
+          {{ isAssessmentFinal ? 'Фіналізовано' : 'Завершити оцінку' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

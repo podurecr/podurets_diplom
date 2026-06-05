@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+}
+
+.user-create-page {
+  min-height: 100vh;
+  padding: 40px;
+  background: #f3f6fa;
+}
+
+.page-header {
+  max-width: 900px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #1f2937;
+}
+
+.page-header p {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+}
+
+.back-link {
+  color: #1f5f8b;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 8px 20px rgba(31, 41, 55, 0.06);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 7px;
+  font-weight: 700;
+  color: #374151;
+  font-size: 14px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: #1f5f8b;
+  box-shadow: 0 0 0 3px rgba(31, 95, 139, 0.12);
+}
+
+small {
+  margin-top: 6px;
+  color: #b42318;
+  font-size: 13px;
+}
+
+.checkbox-field {
+  justify-content: flex-end;
+}
+
+.checkbox-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.checkbox-field input {
+  width: auto;
+}
+
+.messages {
+  margin-top: 20px;
+}
+
+.success {
+  color: #2b8a3e;
+  font-weight: 700;
+}
+
+.error {
+  color: #b42318;
+  font-weight: 700;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+button {
+  background: #1f5f8b;
+  color: #ffffff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+button:hover {
+  background: #16466a;
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+  .user-create-page {
+    padding: 20px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
