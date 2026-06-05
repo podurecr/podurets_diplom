@@ -8,25 +8,23 @@ namespace ProductControllCrohmal.Controllers
     [Route("api/shipment-decisions")]
     public class ShipmentDecisionController : BaseApiController
     {
-        private readonly IShipmentDecisionService _shipmentDecisionService;
+        private readonly IShipmentDecisionService shipmentDecisionService;
 
         public ShipmentDecisionController(IShipmentDecisionService shipmentDecisionService)
         {
-            _shipmentDecisionService = shipmentDecisionService;
+            this.shipmentDecisionService = shipmentDecisionService;
         }
 
-        [HttpPost("batch/{batchId:int}")]
-        public async Task<ActionResult<ShipmentDecisionDTO>> CreateDecision(
-            int batchId,
-            [FromQuery] int userId,
+        [HttpGet]
+        public async Task<ActionResult<List<ShipmentDecisionDTO>>> GetDecisions(
             CancellationToken cancellationToken)
         {
             try
             {
-                var decision = await _shipmentDecisionService
-                    .CreateDecisionAsync(batchId, userId, cancellationToken);
+                var decisions = await shipmentDecisionService
+                    .GetDecisionsAsync(cancellationToken);
 
-                return Ok(decision);
+                return Ok(decisions);
             }
             catch (Exception ex)
             {
@@ -35,12 +33,12 @@ namespace ProductControllCrohmal.Controllers
         }
 
         [HttpGet("allowed-batches")]
-        public async Task<ActionResult<List<ShipmentDecisionDTO>>> GetBatchesAllowedForShipment(
-            CancellationToken cancellationToken)
+        public async Task<ActionResult<List<BatchDTO>>> GetBatchesAllowedForShipment(
+             CancellationToken cancellationToken)
         {
             try
             {
-                var batches = await _shipmentDecisionService
+                var batches = await shipmentDecisionService
                     .GetBatchesAllowedForShipmentAsync(cancellationToken);
 
                 return Ok(batches);
@@ -58,11 +56,54 @@ namespace ProductControllCrohmal.Controllers
         {
             try
             {
-                var decision = await _shipmentDecisionService
+                var decision = await shipmentDecisionService
                     .GetDecisionByBatchIdAsync(batchId, cancellationToken);
 
                 if (decision is null)
-                    return NotFound(new { message = "Решение по отгрузке для партии не найдено." });
+                {
+                    return NotFound(new
+                    {
+                        message = "Рішення щодо відвантаження для партії не знайдено."
+                    });
+                }
+
+                return Ok(decision);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpPost("batch/{batchId:int}/allow")]
+        public async Task<ActionResult<ShipmentDecisionDTO>> AllowShipment(
+            int batchId,
+            [FromQuery] int userId,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var decision = await shipmentDecisionService
+                    .AllowShipmentAsync(batchId, userId, cancellationToken);
+
+                return Ok(decision);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpPost("batch/{batchId:int}/deny")]
+        public async Task<ActionResult<ShipmentDecisionDTO>> DenyShipment(
+            int batchId,
+            [FromQuery] int userId,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var decision = await shipmentDecisionService
+                    .DenyShipmentAsync(batchId, userId, cancellationToken);
 
                 return Ok(decision);
             }

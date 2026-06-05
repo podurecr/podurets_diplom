@@ -8,13 +8,20 @@ namespace Domain.Services.Interfaces
 {
     public interface IQualityCertificateService
     {
-        Task<QualityCertificateDTO> GenerateCertificateAsync(
-            int batchId,
-            int userId,
+        Task<List<QualityCertificateDTO>> GetCertificatesAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<QualityCertificateDTO?> GetCertificateByIdAsync(
+            int certificateId,
             CancellationToken cancellationToken = default);
 
         Task<QualityCertificateDTO?> GetCertificateByBatchIdAsync(
             int batchId,
+            CancellationToken cancellationToken = default);
+
+        Task<QualityCertificateDTO> GenerateCertificateAsync(
+            int batchId,
+            int userId,
             CancellationToken cancellationToken = default);
 
         Task<byte[]> ExportCertificateToPdfAsync(

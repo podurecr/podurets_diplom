@@ -46,6 +46,7 @@ namespace Domain.Mappers
                 CreatedAt = batch.CreatedAt,
                 ProductId = batch.ProductId,
                 CreatedByUserId = batch.CreatedByUserId,
+                IsAnalysisCompleted = batch.IsAnalysisCompleted
             };
         }
 
@@ -76,6 +77,8 @@ namespace Domain.Mappers
                 Comment = result.Comment,
                 AnalyzedAt = result.AnalyzedAt,
                 EnteredByUserId = result.EnteredByUserId,
+                IsAnalysisCompleted  = result.IsAnalysisCompleted,
+                AnalysisCompletedAt = result.AnalysisCompletedAt,
             };
         }
 
@@ -89,6 +92,7 @@ namespace Domain.Mappers
                 Conclusion = assessment.Conclusion,
                 AssessedAt = assessment.AssessedAt,
                 AssessedByUserId = assessment.AssessedByUserId,
+                IsFinal = assessment.IsFinal,
             };
         }
 
@@ -116,6 +120,23 @@ namespace Domain.Mappers
                 DecisionText = decision.DecisionText,
                 CreatedAt = decision.CreatedAt,
                 CreatedByUserId = decision.CreatedByUserId,
+            };
+        }
+
+        public static RoleDTO? ToRoleDTO(Role role)
+        {
+            return new RoleDTO { Id = role.Id, Name = role.Name };
+        }
+
+        internal static QualityParameterDTO? ToQualityParameterDTO(QualityParameter? result)
+        {
+            return new QualityParameterDTO
+            {
+                Id = result.Id,
+                Name = result.Name, 
+                Description = result.Description, 
+                IsActive = result.IsActive, 
+                Unit = result.Unit,
             };
         }
     }

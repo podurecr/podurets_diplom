@@ -15,6 +15,21 @@ namespace ProductControllCrohmal.Controllers
             _qualitySpecificationService = qualitySpecificationService;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<ProductQualitySpecificationDTO>>> GetSpecifications()
+        {
+            try
+            {
+                var specifications = await _qualitySpecificationService.GetSpecificationsAsync();
+
+                return Ok(specifications);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
         [HttpGet("product/{productId:int}")]
         public async Task<ActionResult<List<ProductQualitySpecificationDTO>>> GetSpecificationsByProductId(
             int productId,

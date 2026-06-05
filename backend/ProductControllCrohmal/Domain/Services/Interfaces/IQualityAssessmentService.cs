@@ -22,5 +22,17 @@ namespace Domain.Services.Interfaces
         Task<BatchStatus> CalculateBatchStatusAsync(
             int batchId,
             CancellationToken cancellationToken = default);
+
+        Task<QualityAssessmentDTO> SaveAssessmentAsync(
+            int batchId,
+            QualityAssessmentDTO dto,
+            int userId,
+            CancellationToken cancellationToken = default);
+
+        Task<QualityAssessmentDTO> FinalizeAssessmentAsync(
+            int batchId,
+            QualityAssessmentDTO dto,
+            int userId,
+            CancellationToken cancellationToken = default);
     }
 }

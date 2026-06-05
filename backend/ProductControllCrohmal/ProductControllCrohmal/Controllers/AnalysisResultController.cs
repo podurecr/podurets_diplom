@@ -53,6 +53,33 @@ namespace ProductControllCrohmal.Controllers
             }
         }
 
+        [HttpPost("batch/{batchId:int}/complete")]
+        public async Task<IActionResult> CompleateAnalys(
+            int batchId,
+            [FromBody] SaveBatchAnalysisRequestDTO dto,
+            [FromQuery] int userId,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (userId <= 0)
+                    return BadRequest(new { message = "Не указан пользователь, который внёс анализы." });
+
+                await _analysisResultService.CompleteBatchAnalysisAsync(
+                    batchId,
+                    dto,
+                    userId,
+                    cancellationToken);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+
         [HttpPut("{resultId:int}")]
         public async Task<IActionResult> UpdateResult(
             int resultId,
@@ -62,6 +89,42 @@ namespace ProductControllCrohmal.Controllers
             try
             {
                 await _analysisResultService.UpdateResultAsync(resultId, dto, cancellationToken);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<AnalysisResultDTO>>> GetAllAsync(
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = _analysisResultService.GetAnalysisResultsAsync(cancellationToken).Result;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpPost("batch/{batchId:int}/finish")]
+        public async Task<IActionResult> FinishBatchAnalysis(
+            int batchId,
+            [FromQuery] int userId,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _analysisResultService.FinishBatchAnalysisAsync(
+                    batchId,
+                    userId,
+                    cancellationToken);
+
                 return NoContent();
             }
             catch (Exception ex)

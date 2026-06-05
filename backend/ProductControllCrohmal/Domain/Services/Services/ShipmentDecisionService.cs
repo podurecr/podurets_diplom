@@ -17,103 +17,172 @@ namespace Domain.Services.Services
         private readonly IShipmentDecisionRepository shipmentDecisionRepository;
         private readonly IBatchRepository batchRepository;
         private readonly IUserRepository userRepository;
+        private readonly IQualityCertificateRepository qualityCertificateRepository;
+        private readonly IProductRepository productRepository;
 
         public ShipmentDecisionService(
             IShipmentDecisionRepository shipmentDecisionRepository,
             IBatchRepository batchRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IQualityCertificateRepository qualityCertificateRepository,
+            IProductRepository productRepository)
         {
             this.shipmentDecisionRepository = shipmentDecisionRepository;
             this.batchRepository = batchRepository;
             this.userRepository = userRepository;
+            this.qualityCertificateRepository = qualityCertificateRepository;
+            this.productRepository = productRepository;
         }
 
-        public async Task<ShipmentDecisionDTO> CreateDecisionAsync(
-            int batchId,
-            int userId,
+        public async Task<List<ShipmentDecisionDTO>> GetDecisionsAsync(
             CancellationToken cancellationToken = default)
         {
-            if (batchId <= 0)
-                throw new ArgumentException("Некорректный ID партии.");
+            var decisions = await shipmentDecisionRepository
+                .GetAllWithDetailsAsync(cancellationToken);
 
-            if (userId <= 0)
-                throw new ArgumentException("Некорректный ID пользователя.");
-
-            var existingDecision = await shipmentDecisionRepository
-                .GetByBatchIdAsync(batchId, cancellationToken);
-
-            if (existingDecision is not null)
-                return EntityToDTOMapper.ToShipmentDecisionDTO(existingDecision);
-
-            var batch = await batchRepository.GetWithDetailsAsync(batchId, cancellationToken);
-
-            if (batch is null)
-                throw new InvalidOperationException("Партия не найдена.");
-
-            var user = await userRepository.GetByIdAsync(userId, cancellationToken);
-
-            if (user is null)
-                throw new InvalidOperationException("Пользователь не найден.");
-
-            var isAllowedForShipment =
-                batch.Status == BatchStatus.Approved &&
-                batch.QualityCertificate is not null;
-
-            var decision = new ShipmentDecision
-            {
-                BatchId = batchId,
-                Status = isAllowedForShipment
-                    ? ShipmentDecisionStatus.Allowed
-                    : ShipmentDecisionStatus.Prohibited,
-                DecisionText = isAllowedForShipment
-                    ? "Партію дозволено до відвантаження"
-                    : "Партію заборонено до відвантаження",
-                CreatedAt = DateTime.UtcNow,
-                CreatedByUserId = userId
-            };
-
-            await shipmentDecisionRepository.AddAsync(decision, cancellationToken);
-            await shipmentDecisionRepository.SaveChangesAsync(cancellationToken);
-
-            decision.Batch = batch;
-            decision.CreatedByUser = user;
-
-            return EntityToDTOMapper.ToShipmentDecisionDTO(decision);
+            return decisions
+                .Select(ToDto)
+                .ToList();
         }
 
         public async Task<List<BatchDTO>> GetBatchesAllowedForShipmentAsync(
             CancellationToken cancellationToken = default)
         {
             var batches = await batchRepository
-                .QueryNoTracking()
-                .Include(x => x.Product)
-                .Include(x => x.CreatedByUser)
-                .Include(x => x.QualityCertificate)
-                .Where(x =>
-                    x.Status == BatchStatus.Approved &&
-                    x.QualityCertificate != null)
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync(cancellationToken);
+                .GetBatchesAllowedForShipmentAsync(cancellationToken);
 
-            return batches
-                .Select(EntityToDTOMapper.ToBatchDTO)
-                .ToList();
+            var list = new List<BatchDTO>();
+
+            foreach (var batch in batches)
+            {
+                var dto = EntityToDTOMapper.ToBatchDTO(batch);
+                dto.Product = EntityToDTOMapper.ToProductDTO(productRepository.GetByIdAsync(dto.ProductId).Result);
+                dto.CreatedByUser = EntityToDTOMapper.ToUserDTO(userRepository.GetByIdAsync(dto.CreatedByUserId).Result);
+
+                list.Add(dto);
+            }
+
+            return list;
         }
 
         public async Task<ShipmentDecisionDTO?> GetDecisionByBatchIdAsync(
             int batchId,
             CancellationToken cancellationToken = default)
         {
-            if (batchId <= 0)
-                throw new ArgumentException("Некорректный ID партии.");
 
             var decision = await shipmentDecisionRepository
+                .GetByBatchIdNoTrackingAsync(batchId, cancellationToken);
+
+            return decision is null ? null : ToDto(decision);
+        }
+
+        public async Task<ShipmentDecisionDTO> AllowShipmentAsync(
+            int batchId,
+            int userId,
+            CancellationToken cancellationToken = default)
+        {
+            return await CreateOrUpdateDecisionAsync(
+                batchId,
+                userId,
+                ShipmentDecisionStatus.Allowed,
+                "Відвантаження дозволено на підставі сформованого сертифіката якості.",
+                cancellationToken);
+        }
+
+        public async Task<ShipmentDecisionDTO> DenyShipmentAsync(
+            int batchId,
+            int userId,
+            CancellationToken cancellationToken = default)
+        {
+            return await CreateOrUpdateDecisionAsync(
+                batchId,
+                userId,
+                ShipmentDecisionStatus.Prohibited,
+                "Відвантаження заборонено працівником складу.",
+                cancellationToken);
+        }
+
+        private async Task<ShipmentDecisionDTO> CreateOrUpdateDecisionAsync(
+            int batchId,
+            int userId,
+            ShipmentDecisionStatus status,
+            string decisionText,
+            CancellationToken cancellationToken)
+        {
+
+            var batch = await batchRepository.GetByIdAsync(batchId, cancellationToken);
+
+
+            var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+
+
+            var certificate = await qualityCertificateRepository
                 .GetByBatchIdAsync(batchId, cancellationToken);
 
-            if (decision is null)
-                return null;
+            if (certificate is null)
+                throw new InvalidOperationException(
+                    "Неможливо прийняти рішення щодо відвантаження без сформованого сертифіката якості.");
 
-            return EntityToDTOMapper.ToShipmentDecisionDTO(decision);
+            var decision = await shipmentDecisionRepository
+                .GetByBatchIdForUpdateAsync(batchId, cancellationToken);
+
+            if (decision is null)
+            {
+                decision = new ShipmentDecision
+                {
+                    BatchId = batchId,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedByUserId = userId
+                };
+
+                await shipmentDecisionRepository.AddAsync(decision, cancellationToken);
+            }
+
+            decision.Status = status;
+            decision.DecisionText = decisionText;
+            decision.CreatedAt = DateTime.UtcNow;
+            decision.CreatedByUserId = userId;
+
+            if (status == ShipmentDecisionStatus.Allowed)
+            {
+                batch.Status = BatchStatus.ReadyForShipment;
+                batchRepository.Update(batch);
+            }
+
+            if (status == ShipmentDecisionStatus.Prohibited)
+            {
+                batch.Status = BatchStatus.Approved;
+                batchRepository.Update(batch);
+            }
+
+            await shipmentDecisionRepository.SaveChangesAsync(cancellationToken);
+
+            var updatedDecision = await shipmentDecisionRepository
+                .GetByBatchIdNoTrackingAsync(batchId, cancellationToken);
+
+            if (updatedDecision is null)
+                throw new InvalidOperationException("Рішення було створено, але не знайдено після збереження.");
+
+            return ToDto(updatedDecision);
+        }
+
+        private ShipmentDecisionDTO ToDto(ShipmentDecision decision)
+        {
+            return new ShipmentDecisionDTO
+            {
+                Id = decision.Id,
+                BatchId = decision.BatchId,
+                Batch = decision.Batch is null
+                    ? null
+                    : EntityToDTOMapper.ToBatchDTO(decision.Batch),
+                Status = decision.Status,
+                DecisionText = decision.DecisionText,
+                CreatedAt = decision.CreatedAt,
+                CreatedByUserId = decision.CreatedByUserId,
+                CreatedByUser = decision.CreatedByUser is null
+                    ? null
+                    : EntityToDTOMapper.ToUserDTO(decision.CreatedByUser)
+            };
         }
     }
 }

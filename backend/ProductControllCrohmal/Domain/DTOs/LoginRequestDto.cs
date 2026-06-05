@@ -6,7 +6,8 @@ namespace Domain.DTOs
 {
     public class LoginRequestDto
     {
-        public string userLogin = "" ;
-        public string userPassword = "";
+        public string userLogin { get; set; } = string.Empty;
+
+        public string userPassword { get; set; } = string.Empty;
     }
 }

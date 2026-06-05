@@ -10,5 +10,7 @@ namespace Repositories.Repositories.Interfaces
         Task<Batch?> GetByBatchNumberAsync(string batchNumber, CancellationToken cancellationToken = default);
         Task<Batch?> GetWithDetailsAsync(int id, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<Batch>> GetByProductIdAsync(int productId, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Batch>> GetBatchesAllowedForShipmentAsync(CancellationToken cancellationToken = default);
+
     }
 }

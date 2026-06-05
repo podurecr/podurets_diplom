@@ -11,13 +11,13 @@ namespace Domain.Services.Services
 {
     public class UserService : IUserService
     {
-        private const string DefaultInitialPassword = "123456";
-
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository roleRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
+            this.roleRepository = roleRepository;
         }
 
         public async Task<List<UserDTO>> GetUsersAsync(
@@ -29,17 +29,22 @@ namespace Domain.Services.Services
                 .OrderBy(x => x.FullName)
                 .ToListAsync(cancellationToken);
 
-            return users
-                .Select(EntityToDTOMapper.ToUserDTO)
-                .ToList();
+            var list = new List<UserDTO>();
+
+            foreach (var user in users) { 
+                var dto = EntityToDTOMapper.ToUserDTO(user);
+                dto.Role = EntityToDTOMapper.ToRoleDTO(roleRepository.GetByIdAsync(dto.RoleId).Result);
+
+                list.Add(dto);
+            }
+
+            return list;
         }
 
         public async Task<UserDTO?> GetUserByIdAsync(
             int id,
             CancellationToken cancellationToken = default)
         {
-            if (id <= 0)
-                throw new ArgumentException("Некорректный ID пользователя.");
 
             var user = await _userRepository.GetWithRoleAsync(id, cancellationToken);
 
@@ -53,20 +58,6 @@ namespace Domain.Services.Services
             UserDTO dto,
             CancellationToken cancellationToken = default)
         {
-            if (dto is null)
-                throw new ArgumentNullException(nameof(dto));
-
-            if (string.IsNullOrWhiteSpace(dto.FullName))
-                throw new InvalidOperationException("ФИО пользователя обязательно.");
-
-            if (string.IsNullOrWhiteSpace(dto.Login))
-                throw new InvalidOperationException("Логин пользователя обязателен.");
-
-            if (string.IsNullOrWhiteSpace(dto.Email))
-                throw new InvalidOperationException("Email пользователя обязателен.");
-
-            if (dto.RoleId <= 0)
-                throw new InvalidOperationException("Роль пользователя обязательна.");
 
             var normalizedLogin = dto.Login.Trim();
             var normalizedEmail = dto.Email.Trim();
@@ -75,23 +66,23 @@ namespace Domain.Services.Services
                 .GetByLoginAsync(normalizedLogin, cancellationToken);
 
             if (existingByLogin is not null)
-                throw new InvalidOperationException("Пользователь с таким логином уже существует.");
+                throw new InvalidOperationException("Користувач з таким логіном вже існує.");
 
             var existingByEmail = await _userRepository
                 .GetByEmailAsync(normalizedEmail, cancellationToken);
 
             if (existingByEmail is not null)
-                throw new InvalidOperationException("Пользователь с таким email уже существует.");
+                throw new InvalidOperationException("Користувач з такою поштою вже існує.");
 
             var user = new User
             {
                 FullName = dto.FullName.Trim(),
                 Login = normalizedLogin,
                 Email = normalizedEmail,
-                PasswordHash = PasswordHasher.Hash(DefaultInitialPassword),
+                PasswordHash = PasswordHasher.HashPassword(dto.PasswordHash),
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow,
-                RoleId = dto.RoleId
+                RoleId = dto.Role.Id
             };
 
             await _userRepository.AddAsync(user, cancellationToken);
@@ -107,28 +98,8 @@ namespace Domain.Services.Services
             UserDTO dto,
             CancellationToken cancellationToken = default)
         {
-            if (dto is null)
-                throw new ArgumentNullException(nameof(dto));
+            var user = await _userRepository.GetByIdForUpdateAsync(id, cancellationToken);
 
-            if (id <= 0)
-                throw new ArgumentException("Некорректный ID пользователя.");
-
-            if (string.IsNullOrWhiteSpace(dto.FullName))
-                throw new InvalidOperationException("ФИО пользователя обязательно.");
-
-            if (string.IsNullOrWhiteSpace(dto.Login))
-                throw new InvalidOperationException("Логин пользователя обязателен.");
-
-            if (string.IsNullOrWhiteSpace(dto.Email))
-                throw new InvalidOperationException("Email пользователя обязателен.");
-
-            if (dto.RoleId <= 0)
-                throw new InvalidOperationException("Роль пользователя обязательна.");
-
-            var user = await _userRepository.GetByIdAsync(id, cancellationToken);
-
-            if (user is null)
-                throw new KeyNotFoundException("Пользователь не найден.");
 
             var normalizedLogin = dto.Login.Trim();
             var normalizedEmail = dto.Email.Trim();
@@ -137,42 +108,41 @@ namespace Domain.Services.Services
                 .GetByLoginAsync(normalizedLogin, cancellationToken);
 
             if (existingByLogin is not null && existingByLogin.Id != id)
-                throw new InvalidOperationException("Пользователь с таким логином уже существует.");
+                throw new InvalidOperationException("Користувач з таким логіном вже існує.");
 
             var existingByEmail = await _userRepository
                 .GetByEmailAsync(normalizedEmail, cancellationToken);
 
             if (existingByEmail is not null && existingByEmail.Id != id)
-                throw new InvalidOperationException("Пользователь с таким email уже существует.");
+                throw new InvalidOperationException("Користувач з такою поштою вже існує.");
 
             user.FullName = dto.FullName.Trim();
             user.Login = normalizedLogin;
             user.Email = normalizedEmail;
             user.IsActive = dto.IsActive;
-            user.RoleId = dto.RoleId;
+            user.RoleId = dto.Role.Id;
 
-            _userRepository.Update(user);
+            if (!string.IsNullOrWhiteSpace(dto.PasswordHash))
+            {
+                user.PasswordHash = PasswordHasher.HashPassword(dto.PasswordHash.Trim());
+            }
+
+
             await _userRepository.SaveChangesAsync(cancellationToken);
 
             var updatedUser = await _userRepository.GetWithRoleAsync(id, cancellationToken);
 
-            return EntityToDTOMapper.ToUserDTO(updatedUser ?? user);
+            return EntityToDTOMapper.ToUserDTO(updatedUser);
         }
 
         public async Task DeleteUserAsync(
             int id,
             CancellationToken cancellationToken = default)
         {
-            if (id <= 0)
-                throw new ArgumentException("Некорректный ID пользователя.");
 
             var user = await _userRepository.GetByIdAsync(id, cancellationToken);
 
-            if (user is null)
-                throw new KeyNotFoundException("Пользователь не найден.");
 
-            // Лучше не удалять физически, потому что User связан с партиями,
-            // результатами анализов, сертификатами и решениями по отгрузке.
             user.IsActive = false;
 
             _userRepository.Update(user);

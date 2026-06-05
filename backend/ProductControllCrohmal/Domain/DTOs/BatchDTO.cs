@@ -14,6 +14,8 @@ namespace Domain.DTOs
 
         public string Unit { get; set; } = "кг";
 
+        public bool IsAnalysisCompleted { get; set; } = false;
+
         public string? ProductionLine { get; set; }
 
         public string? Comment { get; set; }

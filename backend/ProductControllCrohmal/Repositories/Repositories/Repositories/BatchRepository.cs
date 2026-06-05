@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repositories.Data;
 using Repositories.Entities;
+using Repositories.Enums;
 using Repositories.Repositories.Interfaces;
 
 namespace Repositories.Repositories.Repositories
@@ -37,6 +38,24 @@ namespace Repositories.Repositories.Repositories
             return await QueryNoTracking()
                 .Include(x => x.Product)
                 .Where(x => x.ProductId == productId)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IReadOnlyList<Batch>> GetBatchesAllowedForShipmentAsync(
+           CancellationToken cancellationToken = default)
+        {
+            return await QueryNoTracking()
+                .Include(x => x.Product)
+                .Include(x => x.QualityCertificate)
+                .Include(x => x.ShipmentDecision)
+                .Where(x =>
+                    x.IsAnalysisCompleted &&
+                    x.QualityCertificate != null &&
+                    (
+                        x.Status == BatchStatus.Approved ||
+                        x.Status == BatchStatus.ReadyForShipment
+                    ))
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync(cancellationToken);
         }

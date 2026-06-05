@@ -55,12 +55,11 @@ namespace ProductControllCrohmal.Controllers
         [HttpPost]
         public async Task<ActionResult<BatchDTO>> CreateBatch(
             [FromBody] BatchDTO dto,
-            [FromQuery] int userId,
             CancellationToken cancellationToken)
         {
             try
             {
-                var createdBatch = await _batchService.CreateBatchAsync(dto, userId, cancellationToken);
+                var createdBatch = await _batchService.CreateBatchAsync(dto, cancellationToken);
 
                 return CreatedAtAction(
                     nameof(GetBatchById),

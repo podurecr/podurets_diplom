@@ -1,11 +1,13 @@
 ﻿using Domain.DTOs;
 using Domain.Services.Interfaces;
+using Domain.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Enums;
 
 namespace ProductControllCrohmal.Controllers
 {
-    [Route("api/quality-assessments")]
+    [ApiController]
+    [Route("api/quality-assessment")]
     public class QualityAssessmentController : BaseApiController
     {
         private readonly IQualityAssessmentService _qualityAssessmentService;
@@ -26,7 +28,12 @@ namespace ProductControllCrohmal.Controllers
                     .GetAssessmentByBatchIdAsync(batchId, cancellationToken);
 
                 if (assessment is null)
-                    return NotFound(new { message = "Оценка качества для партии не найдена." });
+                {
+                    return NotFound(new
+                    {
+                        message = "Оценка качества для партии не найдена."
+                    });
+                }
 
                 return Ok(assessment);
             }
@@ -36,8 +43,8 @@ namespace ProductControllCrohmal.Controllers
             }
         }
 
-        [HttpPost("batch/{batchId:int}")]
-        public async Task<ActionResult<QualityAssessmentDTO>> AssessBatch(
+        [HttpPost("batch/{batchId:int}/save")]
+        public async Task<ActionResult<QualityAssessmentDTO>> SaveAssessment(
             int batchId,
             [FromBody] QualityAssessmentDTO dto,
             [FromQuery] int userId,
@@ -46,7 +53,27 @@ namespace ProductControllCrohmal.Controllers
             try
             {
                 var assessment = await _qualityAssessmentService
-                    .AssessBatchAsync(batchId, dto, userId, cancellationToken);
+                    .SaveAssessmentAsync(batchId, dto, userId, cancellationToken);
+
+                return Ok(assessment);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpPost("batch/{batchId:int}/finalize")]
+        public async Task<ActionResult<QualityAssessmentDTO>> FinalizeAssessment(
+            int batchId,
+            [FromBody] QualityAssessmentDTO dto,
+            [FromQuery] int userId,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var assessment = await _qualityAssessmentService
+                    .FinalizeAssessmentAsync(batchId, dto, userId, cancellationToken);
 
                 return Ok(assessment);
             }

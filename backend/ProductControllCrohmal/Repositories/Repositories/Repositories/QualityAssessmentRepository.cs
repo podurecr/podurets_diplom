@@ -18,5 +18,21 @@ namespace Repositories.Repositories.Repositories
                 .Include(x => x.AssessedByUser)
                 .FirstOrDefaultAsync(x => x.BatchId == batchId, cancellationToken);
         }
+
+        public async Task<QualityAssessment?> GetByBatchIdNoTrackingAsync(
+            int batchId,
+            CancellationToken cancellationToken = default)
+        {
+            return await QueryNoTracking()
+                .FirstOrDefaultAsync(x => x.BatchId == batchId, cancellationToken);
+        }
+
+        public async Task<QualityAssessment?> GetByBatchIdForUpdateAsync(
+            int batchId,
+            CancellationToken cancellationToken = default)
+        {
+            return await Query()
+                .FirstOrDefaultAsync(x => x.BatchId == batchId, cancellationToken);
+        }
     }
 }

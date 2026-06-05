@@ -1,11 +1,13 @@
 using Domain.Services.Interfaces;
 using Domain.Services.Services;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.IdentityModel.Tokens;
 using Repositories.Data;
 using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +16,43 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+            ),
+
+            RoleClaimType = ClaimTypes.Role
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 // DI: Services
 builder.Services.AddScoped<IAnalysisResultService, AnalysisResultService>();
@@ -27,6 +64,7 @@ builder.Services.AddScoped<IQualityAssessmentService, QualityAssessmentService>(
 builder.Services.AddScoped<IQualityCertificateService, QualityCertificateService>();
 builder.Services.AddScoped<IShipmentDecisionService, ShipmentDecisionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IQualityParameterService, QualityParameterService>();
 
 // DI: Repositories
 builder.Services.AddScoped<IAnalysisResultRepository, AnalysisResultRepository>();
@@ -39,6 +77,13 @@ builder.Services.AddScoped<IQualityParameterRepository, QualityParameterReposito
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IShipmentDecisionRepository, ShipmentDecisionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<QualityCertificateRepository>();
+builder.Services.AddScoped<BatchRepository>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<QualityAssessmentRepository>();
+builder.Services.AddScoped<AnalysisResultRepository>();
+builder.Services.AddScoped<ProductQualitySpecificationRepository>();
 
 // Если у тебя есть общий IRepository / Repository
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -57,6 +102,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngular");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

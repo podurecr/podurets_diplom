@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\Diplom\\backend\\ProductControllCrohmal\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\interfaces\\ianalysisresultrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\interfaces\\ianalysisresultrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\shipmentdecisionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\shipmentdecisionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\interfaces\\ibatchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\interfaces\\ibatchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\repositories\\batchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\repositories\\batchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\interfaces\\ishipmentdecisionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\interfaces\\ishipmentdecisionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83187E44-D683-DB9C-6057-31B84859885E}|ProductControllCrohmal\\ProductControllCrohmal.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\productcontrollcrohmal\\controllers\\batchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83187E44-D683-DB9C-6057-31B84859885E}|ProductControllCrohmal\\ProductControllCrohmal.csproj|solutionrelative:productcontrollcrohmal\\controllers\\batchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +30,75 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BatchRepository.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAswC0AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:35:20.535Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IBatchRepository.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:35:16.299Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "IAnalysisResultRepository.cs",
-              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "RelativeToolTip": "Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "ShipmentDecisionService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAIwEAAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-22T17:07:42.813Z",
+              "WhenOpened": "2026-06-04T18:35:04.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IShipmentDecisionRepository.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:34:45.877Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BatchController.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "RelativeDocumentMoniker": "ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "RelativeToolTip": "ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T17:49:49.38Z",
               "EditorCaption": ""
             }
           ]

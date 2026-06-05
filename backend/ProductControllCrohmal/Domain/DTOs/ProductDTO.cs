@@ -14,8 +14,6 @@
 
         public bool IsActive { get; set; } = true;
 
-        public ICollection<BatchDTO> Batches { get; set; } = new List<BatchDTO>();
 
-        public ICollection<ProductQualitySpecificationDTO> QualitySpecifications { get; set; } = new List<ProductQualitySpecificationDTO>();
     }
 }

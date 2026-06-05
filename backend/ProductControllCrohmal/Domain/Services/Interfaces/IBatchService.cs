@@ -19,7 +19,6 @@ namespace Domain.Services.Interfaces
 
         Task<BatchDTO> CreateBatchAsync(
             BatchDTO dto,
-            int userId,
             CancellationToken cancellationToken = default);
 
         Task<BatchDTO> UpdateBatchAsync(

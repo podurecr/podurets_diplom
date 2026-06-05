@@ -102,6 +102,56 @@
         }
       }
     },
+    "/api/analysis-result/batch/{batchId}/complete": {
+      "post": {
+        "tags": [
+          "AnalysisResult"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveBatchAnalysisRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveBatchAnalysisRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveBatchAnalysisRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/analysis-result/{resultId}": {
       "put": {
         "tags": [
@@ -137,6 +187,75 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/analysis-result": {
+      "get": {
+        "tags": [
+          "AnalysisResult"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnalysisResultDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnalysisResultDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnalysisResultDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analysis-result/batch/{batchId}/finish": {
+      "post": {
+        "tags": [
+          "AnalysisResult"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -192,46 +311,6 @@
         }
       }
     },
-    "/api/auth/me/{userId}": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/batches": {
       "get": {
         "tags": [
@@ -274,6 +353,13 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -354,26 +440,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -583,6 +649,13 @@
             }
           },
           {
+            "name": "QualityAssessment.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "QualityAssessment.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -660,26 +733,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -1022,6 +1075,23 @@
             }
           },
           {
+            "name": "QualityAssessment.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+              }
+            }
+          },
+          {
             "name": "QualityAssessment.Batch.QualityCertificate.Id",
             "in": "query",
             "schema": {
@@ -1080,6 +1150,13 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -1160,26 +1237,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.QualityCertificate.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -1522,6 +1579,23 @@
             }
           },
           {
+            "name": "QualityAssessment.Batch.QualityCertificate.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+              }
+            }
+          },
+          {
             "name": "QualityAssessment.Batch.QualityCertificate.Batch.QualityCertificate",
             "in": "query",
             "schema": {
@@ -1580,6 +1654,13 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -1660,26 +1741,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -2018,6 +2079,23 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/ShipmentDecisionDTO"
+              }
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
               }
             }
           },
@@ -2418,6 +2496,13 @@
             }
           },
           {
+            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "QualityAssessment.Batch.ShipmentDecision.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -2495,26 +2580,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -2857,6 +2922,23 @@
             }
           },
           {
+            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+              }
+            }
+          },
+          {
             "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Id",
             "in": "query",
             "schema": {
@@ -2915,6 +2997,13 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -2995,26 +3084,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -3353,6 +3422,23 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/ShipmentDecisionDTO"
+              }
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
               }
             }
           },
@@ -3870,6 +3956,23 @@
             }
           },
           {
+            "name": "QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+              }
+            }
+          },
+          {
             "name": "QualityCertificate.Id",
             "in": "query",
             "schema": {
@@ -3928,6 +4031,13 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "QualityCertificate.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -4008,26 +4118,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -4237,6 +4327,13 @@
             }
           },
           {
+            "name": "QualityCertificate.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "QualityCertificate.Batch.QualityAssessment.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -4314,26 +4411,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.QualityAssessment.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -4744,6 +4821,13 @@
             }
           },
           {
+            "name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -4821,26 +4905,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -5532,6 +5596,23 @@
             }
           },
           {
+            "name": "QualityCertificate.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+              }
+            }
+          },
+          {
             "name": "QualityCertificate.Batch.QualityCertificate.Id",
             "in": "query",
             "schema": {
@@ -5780,6 +5861,13 @@
             }
           },
           {
+            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "QualityCertificate.Batch.ShipmentDecision.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -5857,26 +5945,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -6086,6 +6154,13 @@
             }
           },
           {
+            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -6163,26 +6238,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -6706,6 +6761,23 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/ShipmentDecisionDTO"
+              }
+            }
+          },
+          {
+            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
               }
             }
           },
@@ -7293,6 +7365,13 @@
             }
           },
           {
+            "name": "ShipmentDecision.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "ShipmentDecision.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -7370,26 +7449,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -7599,6 +7658,13 @@
             }
           },
           {
+            "name": "ShipmentDecision.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "ShipmentDecision.Batch.QualityAssessment.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -7676,26 +7742,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityAssessment.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -7919,6 +7965,13 @@
             }
           },
           {
+            "name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -7996,26 +8049,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -8887,6 +8920,23 @@
             }
           },
           {
+            "name": "ShipmentDecision.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+              }
+            }
+          },
+          {
             "name": "ShipmentDecision.Batch.QualityCertificate.Id",
             "in": "query",
             "schema": {
@@ -8945,6 +8995,13 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -9025,26 +9082,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -9254,6 +9291,13 @@
             }
           },
           {
+            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.ProductionLine",
             "in": "query",
             "schema": {
@@ -9331,26 +9375,6 @@
             "in": "query",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.Product.Batches",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BatchDTO"
-              }
-            }
-          },
-          {
-            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
             }
           },
           {
@@ -9867,6 +9891,23 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/ShipmentDecisionDTO"
+              }
+            }
+          },
+          {
+            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.IsFinal",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
               }
             }
           },
@@ -10616,16 +10657,6 @@
         "tags": [
           "Batch"
         ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10977,6 +11008,90 @@
         }
       }
     },
+    "/api/quality-specifications": {
+      "get": {
+        "tags": [
+          "ProductQualitySpecification"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ProductQualitySpecification"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/quality-specifications/product/{productId}": {
       "get": {
         "tags": [
@@ -11026,54 +11141,6 @@
         }
       }
     },
-    "/api/quality-specifications": {
-      "post": {
-        "tags": [
-          "ProductQualitySpecification"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/quality-specifications/{id}": {
       "put": {
         "tags": [
@@ -11116,7 +11183,7 @@
         }
       }
     },
-    "/api/quality-assessments/batch/{batchId}": {
+    "/api/quality-assessment/batch/{batchId}": {
       "get": {
         "tags": [
           "QualityAssessment"
@@ -11154,7 +11221,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/quality-assessment/batch/{batchId}/save": {
       "post": {
         "tags": [
           "QualityAssessment"
@@ -11221,7 +11290,74 @@
         }
       }
     },
-    "/api/quality-assessments/batch/{batchId}/calculated-status": {
+    "/api/quality-assessment/batch/{batchId}/finalize": {
+      "post": {
+        "tags": [
+          "QualityAssessment"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityAssessmentDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityAssessmentDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityAssessmentDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityAssessmentDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityAssessmentDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityAssessmentDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quality-assessment/batch/{batchId}/calculated-status": {
       "get": {
         "tags": [
           "QualityAssessment"
@@ -11261,7 +11397,125 @@
         }
       }
     },
+    "/api/quality-certificates": {
+      "get": {
+        "tags": [
+          "QualityCertificate"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityCertificateDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityCertificateDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityCertificateDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quality-certificates/{id}": {
+      "get": {
+        "tags": [
+          "QualityCertificate"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCertificateDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCertificateDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCertificateDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/quality-certificates/batch/{batchId}": {
+      "get": {
+        "tags": [
+          "QualityCertificate"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCertificateDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCertificateDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCertificateDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quality-certificates/batch/{batchId}/generate": {
       "post": {
         "tags": [
           "QualityCertificate"
@@ -11307,54 +11561,16 @@
             }
           }
         }
-      },
-      "get": {
-        "tags": [
-          "QualityCertificate"
-        ],
-        "parameters": [
-          {
-            "name": "batchId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityCertificateDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityCertificateDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityCertificateDTO"
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/quality-certificates/{certificateId}/pdf": {
+    "/api/quality-certificates/{id}/pdf": {
       "get": {
         "tags": [
           "QualityCertificate"
         ],
         "parameters": [
           {
-            "name": "certificateId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -11370,29 +11586,10 @@
         }
       }
     },
-    "/api/shipment-decisions/batch/{batchId}": {
-      "post": {
+    "/api/quality-parameters": {
+      "get": {
         "tags": [
-          "ShipmentDecision"
-        ],
-        "parameters": [
-          {
-            "name": "batchId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+          "QualityParameter"
         ],
         "responses": {
           "200": {
@@ -11400,30 +11597,125 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityParameterDTO"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityParameterDTO"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityParameterDTO"
+                  }
                 }
               }
             }
           }
         }
       },
+      "post": {
+        "tags": [
+          "QualityParameter"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityParameterDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityParameterDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityParameterDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quality-parameters/active": {
       "get": {
         "tags": [
-          "ShipmentDecision"
+          "QualityParameter"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityParameterDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityParameterDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityParameterDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quality-parameters/{id}": {
+      "get": {
+        "tags": [
+          "QualityParameter"
         ],
         "parameters": [
           {
-            "name": "batchId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -11438,17 +11730,133 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  "$ref": "#/components/schemas/QualityParameterDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  "$ref": "#/components/schemas/QualityParameterDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "QualityParameter"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityParameterDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityParameterDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityParameterDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityParameterDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "QualityParameter"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/shipment-decisions": {
+      "get": {
+        "tags": [
+          "ShipmentDecision"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                  }
                 }
               }
             }
@@ -11469,7 +11877,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                    "$ref": "#/components/schemas/BatchDTO"
                   }
                 }
               },
@@ -11477,7 +11885,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                    "$ref": "#/components/schemas/BatchDTO"
                   }
                 }
               },
@@ -11485,8 +11893,144 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                    "$ref": "#/components/schemas/BatchDTO"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/shipment-decisions/batch/{batchId}": {
+      "get": {
+        "tags": [
+          "ShipmentDecision"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/shipment-decisions/batch/{batchId}/allow": {
+      "post": {
+        "tags": [
+          "ShipmentDecision"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/shipment-decisions/batch/{batchId}/deny": {
+      "post": {
+        "tags": [
+          "ShipmentDecision"
+        ],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentDecisionDTO"
                 }
               }
             }
@@ -11737,6 +12281,14 @@
             "type": "string",
             "nullable": true
           },
+          "isAnalysisCompleted": {
+            "type": "boolean"
+          },
+          "analysisCompletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "analyzedAt": {
             "type": "string",
             "format": "date-time"
@@ -11773,6 +12325,9 @@
           "unit": {
             "type": "string",
             "nullable": true
+          },
+          "isAnalysisCompleted": {
+            "type": "boolean"
           },
           "productionLine": {
             "type": "string",
@@ -11835,6 +12390,16 @@
       },
       "LoginRequestDto": {
         "type": "object",
+        "properties": {
+          "userLogin": {
+            "type": "string",
+            "nullable": true
+          },
+          "userPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
         "additionalProperties": false
       },
       "LoginResponseDto": {
@@ -11880,20 +12445,6 @@
           },
           "isActive": {
             "type": "boolean"
-          },
-          "batches": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BatchDTO"
-            },
-            "nullable": true
-          },
-          "qualitySpecifications": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductQualitySpecificationDTO"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11970,6 +12521,30 @@
           },
           "assessedByUser": {
             "$ref": "#/components/schemas/UserDTO"
+          },
+          "isFinal": {
+            "type": "boolean"
+          },
+          "resultDecisions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QualityAssessmentResultDecisionDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QualityAssessmentResultDecisionDTO": {
+        "type": "object",
+        "properties": {
+          "qualityParameterId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isWithinNorm": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -12068,6 +12643,54 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaveAnalysisResultItemDTO": {
+        "type": "object",
+        "properties": {
+          "qualityParameterId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numericValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "textValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "isWithinNorm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "resultStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaveBatchAnalysisRequestDTO": {
+        "type": "object",
+        "properties": {
+          "batchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaveAnalysisResultItemDTO"
             },
             "nullable": true
           }
@@ -12216,6 +12839,9 @@
     },
     {
       "name": "QualityCertificate"
+    },
+    {
+      "name": "QualityParameter"
     },
     {
       "name": "ShipmentDecision"

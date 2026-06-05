@@ -18,7 +18,7 @@ namespace Domain.Mappers
                 Email = dto.Email.Trim(),
                 PasswordHash = passwordHash,
                 IsActive = true,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.SpecifyKind(dto.CreatedAt, DateTimeKind.Utc),
                 RoleId = dto.RoleId
             };
         }
@@ -54,9 +54,10 @@ namespace Domain.Mappers
                 ProductionLine = dto.ProductionLine,
                 Comment = dto.Comment,
                 Status = BatchStatus.Registered,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.SpecifyKind(dto.CreatedAt, DateTimeKind.Utc),
                 ProductId = dto.ProductId,
-                CreatedByUserId = userId
+                CreatedByUserId = userId,
+                IsAnalysisCompleted = dto.IsAnalysisCompleted
             };
         }
 
@@ -97,8 +98,10 @@ namespace Domain.Mappers
                 TextValue = dto.TextValue,
                 IsWithinNorm = dto.IsWithinNorm,
                 Comment = dto.Comment,
-                AnalyzedAt = DateTime.UtcNow,
-                EnteredByUserId = userId
+                AnalyzedAt = DateTime.SpecifyKind(dto.AnalyzedAt, DateTimeKind.Utc),
+                EnteredByUserId = userId,
+                IsAnalysisCompleted = dto.IsAnalysisCompleted,
+                AnalysisCompletedAt = dto.AnalysisCompletedAt,
             };
         }
 
@@ -106,15 +109,18 @@ namespace Domain.Mappers
             int batchId,
             int userId,
             bool isApproved,
-            string conclusion)
+            string conclusion,
+            bool isFinal,
+            DateTime AssessedAt)
         {
             return new QualityAssessment
             {
                 BatchId = batchId,
                 IsApproved = isApproved,
                 Conclusion = conclusion,
-                AssessedAt = DateTime.UtcNow,
-                AssessedByUserId = userId
+                AssessedAt = DateTime.SpecifyKind(AssessedAt, DateTimeKind.Utc),
+                AssessedByUserId = userId,
+                IsFinal = isFinal
             };
         }
 
@@ -123,13 +129,15 @@ namespace Domain.Mappers
             int userId,
             string certificateNumber,
             string conclusion,
-            string? pdfPath = null)
+            DateTime cratedAt,
+            string? pdfPath = null
+        )
         {
             return new QualityCertificate
             {
                 CertificateNumber = certificateNumber,
                 BatchId = batchId,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.SpecifyKind(cratedAt, DateTimeKind.Utc),
                 CreatedByUserId = userId,
                 Conclusion = conclusion,
                 PdfPath = pdfPath
@@ -140,14 +148,15 @@ namespace Domain.Mappers
             int batchId,
             int userId,
             ShipmentDecisionStatus status,
-            string decisionText)
+            string decisionText,
+            DateTime cratedAt)
         {
             return new ShipmentDecision
             {
                 BatchId = batchId,
                 Status = status,
                 DecisionText = decisionText,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.SpecifyKind(cratedAt, DateTimeKind.Utc),
                 CreatedByUserId = userId
             };
         }

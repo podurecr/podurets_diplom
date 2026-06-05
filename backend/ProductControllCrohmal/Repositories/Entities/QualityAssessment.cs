@@ -17,5 +17,7 @@
         public int AssessedByUserId { get; set; }
 
         public User? AssessedByUser { get; set; }
+        public bool IsFinal { get; set; } = false;
+
     }
 }

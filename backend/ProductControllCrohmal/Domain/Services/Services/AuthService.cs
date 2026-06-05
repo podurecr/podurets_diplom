@@ -2,19 +2,31 @@
 using Domain.Mappers;
 using Domain.Security;
 using Domain.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Repositories.Entities;
 using Repositories.Repositories.Interfaces;
 using Repositories.Repositories.Repositories;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Domain.Services.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository userRepository;
+        private readonly IRoleRepository roleRepository;
+        private readonly IConfiguration _configuration;
 
-        public AuthService(IUserRepository userService)
+        public AuthService(
+            IUserRepository userRepository,
+            IConfiguration configuration,
+            IRoleRepository roleRepository)
         {
-            this.userRepository = userService;
+            this.userRepository = userRepository;
+            _configuration = configuration;
+            this.roleRepository = roleRepository;
         }
 
         public async Task<UserDTO?> GetCurrentUserAsync(
@@ -29,34 +41,59 @@ namespace Domain.Services.Services
             return EntityToDTOMapper.ToUserDTO(user);
         }
 
-        public async Task<LoginResponseDto> LoginAsync(
-            LoginRequestDto dto,
-            CancellationToken cancellationToken = default)
+        public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto request)
         {
-            if (string.IsNullOrWhiteSpace(dto.userLogin))
-                throw new UnauthorizedAccessException("Логин обязателен.");
+            var user = await userRepository.GetByLoginAsync(request.userLogin);
 
-            if (string.IsNullOrWhiteSpace(dto.userPassword))
-                throw new UnauthorizedAccessException("Пароль обязателен.");
-
-            var user = await userRepository.GetByLoginAsync(dto.userLogin.Trim(), cancellationToken);
-
-            if (user is null)
-                throw new UnauthorizedAccessException("Неверный логин или пароль.");
+            if (user == null)
+                return null;
 
             if (!user.IsActive)
-                throw new UnauthorizedAccessException("Пользователь деактивирован.");
+                return null;
 
-            var passwordIsValid = PasswordHasher.Verify(dto.userPassword, user.PasswordHash);
+            var isPasswordValid = PasswordHasher.VerifyPassword(user.PasswordHash, request.userPassword);
 
-            if (!passwordIsValid)
-                throw new UnauthorizedAccessException("Неверный логин или пароль.");
+            Console.WriteLine($"PASSWORD VALID: {isPasswordValid}");
+            
+            if (!isPasswordValid)
+                return null;
+
+            var tokenExpiresAt = DateTime.UtcNow.AddMinutes(
+                Convert.ToDouble(_configuration["Jwt:ExpiresMinutes"])
+            );
+
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Login),
+            new Claim(ClaimTypes.Role, user.Role.Name),
+            new Claim("roleName", user.Role.Name),
+            new Claim("fullName", user.FullName)
+        };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)
+            );
+
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: tokenExpiresAt,
+                signingCredentials: credentials
+            );
+
+            UserDTO userDto = EntityToDTOMapper.ToUserDTO(user);
+
+            userDto.Role = EntityToDTOMapper.ToRoleDTO(roleRepository.GetByIdAsync(user.RoleId).Result);
 
             return new LoginResponseDto
             {
-                User = EntityToDTOMapper.ToUserDTO(user),
-                Token = null,
-                TokenExpiresAt = null
+                User = userDto,
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                TokenExpiresAt = tokenExpiresAt
             };
         }
     }

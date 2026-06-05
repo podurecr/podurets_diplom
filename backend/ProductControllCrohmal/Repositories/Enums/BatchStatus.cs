@@ -6,6 +6,8 @@
         InAnalysis = 2,      // На аналізі
         UnderReview = 3,     // На оцінці якості
         Approved = 4,        // Придатна
-        Rejected = 5         // Брак
+        Rejected = 5,         // Брак
+        ReadyForShipment = 4,
+        Shipped = 5
     }
 }

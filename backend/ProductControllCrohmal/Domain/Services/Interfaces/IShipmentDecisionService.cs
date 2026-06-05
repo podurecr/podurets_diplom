@@ -8,16 +8,24 @@ namespace Domain.Services.Interfaces
 {
     public interface IShipmentDecisionService
     {
-        Task<ShipmentDecisionDTO> CreateDecisionAsync(
+        Task<List<ShipmentDecisionDTO>> GetDecisionsAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<ShipmentDecisionDTO?> GetDecisionByBatchIdAsync(
+            int batchId,
+            CancellationToken cancellationToken = default);
+
+        Task<ShipmentDecisionDTO> AllowShipmentAsync(
+            int batchId,
+            int userId,
+            CancellationToken cancellationToken = default);
+
+        Task<ShipmentDecisionDTO> DenyShipmentAsync(
             int batchId,
             int userId,
             CancellationToken cancellationToken = default);
 
         Task<List<BatchDTO>> GetBatchesAllowedForShipmentAsync(
-            CancellationToken cancellationToken = default);
-
-        Task<ShipmentDecisionDTO?> GetDecisionByBatchIdAsync(
-            int batchId,
             CancellationToken cancellationToken = default);
     }
 }

@@ -12,6 +12,8 @@ namespace Domain.Services.Interfaces
             int productId,
             CancellationToken cancellationToken = default);
 
+        Task<List<ProductQualitySpecificationDTO>> GetSpecificationsAsync();
+
         Task<ProductQualitySpecificationDTO> CreateSpecificationAsync(
             ProductQualitySpecificationDTO dto,
             CancellationToken cancellationToken = default);

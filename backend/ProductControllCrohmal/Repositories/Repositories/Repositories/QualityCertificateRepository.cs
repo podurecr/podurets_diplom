@@ -11,22 +11,52 @@ namespace Repositories.Repositories.Repositories
         {
         }
 
-        public async Task<QualityCertificate?> GetByBatchIdAsync(int batchId, CancellationToken cancellationToken = default)
-        {
-            return await QueryNoTracking()
-                .Include(x => x.Batch)
-                .Include(x => x.CreatedByUser)
-                .FirstOrDefaultAsync(x => x.BatchId == batchId, cancellationToken);
-        }
-
-        public async Task<QualityCertificate?> GetByCertificateNumberAsync(
-            string certificateNumber,
+        public async Task<IReadOnlyList<QualityCertificate>> GetAllWithDetailsAsync(
             CancellationToken cancellationToken = default)
         {
             return await QueryNoTracking()
                 .Include(x => x.Batch)
-                .Include(x => x.CreatedByUser)
-                .FirstOrDefaultAsync(x => x.CertificateNumber == certificateNumber, cancellationToken);
+                    .ThenInclude(x => x!.Product)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<QualityCertificate?> GetByIdWithDetailsAsync(
+            int id,
+            CancellationToken cancellationToken = default)
+        {
+            return await QueryNoTracking()
+                .Include(x => x.Batch)
+                    .ThenInclude(x => x!.Product)
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<QualityCertificate?> GetByBatchIdAsync(
+            int batchId,
+            CancellationToken cancellationToken = default)
+        {
+            return await Query()
+                .Include(x => x.Batch)
+                    .ThenInclude(x => x!.Product)
+                .FirstOrDefaultAsync(x => x.BatchId == batchId, cancellationToken);
+        }
+
+        public async Task<QualityCertificate?> GetByBatchIdNoTrackingAsync(
+            int batchId,
+            CancellationToken cancellationToken = default)
+        {
+            return await QueryNoTracking()
+                .Include(x => x.Batch)
+                    .ThenInclude(x => x!.Product)
+                .FirstOrDefaultAsync(x => x.BatchId == batchId, cancellationToken);
+        }
+
+        public async Task<bool> ExistsForBatchAsync(
+            int batchId,
+            CancellationToken cancellationToken = default)
+        {
+            return await QueryNoTracking()
+                .AnyAsync(x => x.BatchId == batchId, cancellationToken);
         }
     }
 }

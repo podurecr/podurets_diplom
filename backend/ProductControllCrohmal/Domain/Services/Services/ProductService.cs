@@ -31,8 +31,6 @@ namespace Domain.Services.Services
             int id,
             CancellationToken cancellationToken = default)
         {
-            if (id <= 0)
-                throw new ArgumentException("Некорректный ID продукта.");
 
             var product = await productRepository.GetByIdAsync(id, cancellationToken);
 
@@ -46,24 +44,11 @@ namespace Domain.Services.Services
             ProductDTO dto,
             CancellationToken cancellationToken = default)
         {
-            if (dto is null)
-                throw new ArgumentNullException(nameof(dto));
-
-            if (string.IsNullOrWhiteSpace(dto.Code))
-                throw new InvalidOperationException("Код продукта обязателен.");
-
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new InvalidOperationException("Название продукта обязательно.");
-
-            if (string.IsNullOrWhiteSpace(dto.Unit))
-                throw new InvalidOperationException("Единица измерения обязательна.");
 
             var existingProduct = await productRepository.GetByCodeAsync(
                 dto.Code.Trim(),
                 cancellationToken);
 
-            if (existingProduct is not null)
-                throw new InvalidOperationException("Продукт с таким кодом уже существует.");
 
             var product = new Product
             {
@@ -85,32 +70,13 @@ namespace Domain.Services.Services
             ProductDTO dto,
             CancellationToken cancellationToken = default)
         {
-            if (dto is null)
-                throw new ArgumentNullException(nameof(dto));
-
-            if (id <= 0)
-                throw new ArgumentException("Некорректный ID продукта.");
-
-            if (string.IsNullOrWhiteSpace(dto.Code))
-                throw new InvalidOperationException("Код продукта обязателен.");
-
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new InvalidOperationException("Название продукта обязательно.");
-
-            if (string.IsNullOrWhiteSpace(dto.Unit))
-                throw new InvalidOperationException("Единица измерения обязательна.");
-
             var product = await productRepository.GetByIdAsync(id, cancellationToken);
 
-            if (product is null)
-                throw new KeyNotFoundException("Продукт не найден.");
+
 
             var existingProduct = await productRepository.GetByCodeAsync(
                 dto.Code.Trim(),
                 cancellationToken);
-
-            if (existingProduct is not null && existingProduct.Id != id)
-                throw new InvalidOperationException("Продукт с таким кодом уже существует.");
 
             product.Code = dto.Code.Trim();
             product.Name = dto.Name.Trim();

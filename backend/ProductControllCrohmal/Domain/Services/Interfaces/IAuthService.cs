@@ -8,12 +8,6 @@ namespace Domain.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<LoginResponseDto> LoginAsync(
-            LoginRequestDto dto,
-            CancellationToken cancellationToken = default);
-
-        Task<UserDTO?> GetCurrentUserAsync(
-            int userId,
-            CancellationToken cancellationToken = default);
+        Task<LoginResponseDto?> LoginAsync(LoginRequestDto request);
     }
 }

@@ -10,25 +10,34 @@ namespace Domain.Services.Services
     public class ProductQualitySpecificationService : IProductQualitySpecificationService
     {
         private readonly IProductQualitySpecificationRepository productQualitySpecificationRepository;
+        private readonly IProductRepository productRepository;
+        private readonly IQualityParameterRepository qualityParameterRepository;
 
-        public ProductQualitySpecificationService(IProductQualitySpecificationRepository productQualitySpecificationRepository)
+        public ProductQualitySpecificationService(IProductQualitySpecificationRepository productQualitySpecificationRepository, IProductRepository productRepository, IQualityParameterRepository qualityParameterRepository)
         {
             this.productQualitySpecificationRepository = productQualitySpecificationRepository;
+            this.productRepository = productRepository;
+            this.qualityParameterRepository = qualityParameterRepository;
         }
 
         public async Task<List<ProductQualitySpecificationDTO>> GetSpecificationsByProductIdAsync(
            int productId,
            CancellationToken cancellationToken = default)
         {
-            if (productId <= 0)
-                throw new ArgumentException("Некорректный ID продукта.");
 
             var specifications = await productQualitySpecificationRepository
                 .GetByProductIdAsync(productId, cancellationToken);
 
-            return specifications
-                .Select(EntityToDTOMapper.ToSpecificationDTO)
-                .ToList();
+            var result = new List<ProductQualitySpecificationDTO>();
+
+            foreach (var specification in specifications) {
+                var specificationDTO = EntityToDTOMapper.ToSpecificationDTO(specification);
+                specificationDTO.Product = EntityToDTOMapper.ToProductDTO(await productRepository.GetByIdAsync(specification.ProductId));
+                specificationDTO.QualityParameter = EntityToDTOMapper.ToQualityParameterDTO(await qualityParameterRepository.GetByIdAsync(specification.QualityParameterId));
+                result.Add(specificationDTO);
+            }
+
+            return result;
         }
 
         public async Task<ProductQualitySpecificationDTO> CreateSpecificationAsync(
@@ -38,14 +47,6 @@ namespace Domain.Services.Services
             if (dto is null)
                 throw new ArgumentNullException(nameof(dto));
 
-            if (dto.ProductId <= 0)
-                throw new InvalidOperationException("Не указан продукт.");
-
-            if (dto.QualityParameterId <= 0)
-                throw new InvalidOperationException("Не указан показатель качества.");
-
-            if (dto.MinValue.HasValue && dto.MaxValue.HasValue && dto.MinValue > dto.MaxValue)
-                throw new InvalidOperationException("Минимальное значение не может быть больше максимального.");
 
             var existingSpecifications = await productQualitySpecificationRepository
                 .GetByProductIdAsync(dto.ProductId, cancellationToken);
@@ -53,8 +54,6 @@ namespace Domain.Services.Services
             var alreadyExists = existingSpecifications.Any(x =>
                 x.QualityParameterId == dto.QualityParameterId);
 
-            if (alreadyExists)
-                throw new InvalidOperationException("Спецификация для этого показателя качества уже существует у выбранного продукта.");
 
             var specification = new ProductQualitySpecification
             {
@@ -80,23 +79,8 @@ namespace Domain.Services.Services
             if (dto is null)
                 throw new ArgumentNullException(nameof(dto));
 
-            if (id <= 0)
-                throw new ArgumentException("Некорректный ID спецификации.");
-
-            if (dto.ProductId <= 0)
-                throw new InvalidOperationException("Не указан продукт.");
-
-            if (dto.QualityParameterId <= 0)
-                throw new InvalidOperationException("Не указан показатель качества.");
-
-            if (dto.MinValue.HasValue && dto.MaxValue.HasValue && dto.MinValue > dto.MaxValue)
-                throw new InvalidOperationException("Минимальное значение не может быть больше максимального.");
-
             var specification = await productQualitySpecificationRepository
                 .GetByIdAsync(id, cancellationToken);
-
-            if (specification is null)
-                throw new KeyNotFoundException("Спецификация качества не найдена.");
 
             var existingSpecifications = await productQualitySpecificationRepository
                 .GetByProductIdAsync(dto.ProductId, cancellationToken);
@@ -105,9 +89,6 @@ namespace Domain.Services.Services
                 x.Id != id &&
                 x.ProductId == dto.ProductId &&
                 x.QualityParameterId == dto.QualityParameterId);
-
-            if (duplicateExists)
-                throw new InvalidOperationException("Спецификация для этого показателя качества уже существует у выбранного продукта.");
 
             specification.ProductId = dto.ProductId;
             specification.QualityParameterId = dto.QualityParameterId;
@@ -118,6 +99,22 @@ namespace Domain.Services.Services
 
             productQualitySpecificationRepository.Update(specification);
             await productQualitySpecificationRepository.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<ProductQualitySpecificationDTO>> GetSpecificationsAsync()
+        {
+            var pQS = productQualitySpecificationRepository.GetAllAsync().Result;
+            var dtos = new List<ProductQualitySpecificationDTO>();
+
+            foreach(ProductQualitySpecification entity  in pQS)
+            {
+                var dto = EntityToDTOMapper.ToSpecificationDTO(entity);
+                dto.Product = EntityToDTOMapper.ToProductDTO(productRepository.GetByIdAsync(dto.ProductId).Result);
+                dto.QualityParameter = EntityToDTOMapper.ToQualityParameterDTO(qualityParameterRepository.GetByIdAsync(dto.QualityParameterId).Result); ;
+                dtos.Add(dto);
+            }
+
+            return dtos;
         }
     }
 }

@@ -30,6 +30,9 @@ namespace Repositories.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("AnalysisCompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime>("AnalyzedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -42,6 +45,9 @@ namespace Repositories.Data.Migrations
 
                     b.Property<int>("EnteredByUserId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsAnalysisCompleted")
+                        .HasColumnType("boolean");
 
                     b.Property<bool?>("IsWithinNorm")
                         .HasColumnType("boolean");
@@ -89,6 +95,9 @@ namespace Repositories.Data.Migrations
 
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsAnalysisCompleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -221,6 +230,9 @@ namespace Repositories.Data.Migrations
                         .HasColumnType("character varying(1000)");
 
                     b.Property<bool>("IsApproved")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsFinal")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");

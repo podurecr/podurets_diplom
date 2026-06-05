@@ -1,6 +1,7 @@
 ﻿using Domain.DTOs;
 using Domain.Mappers;
 using Domain.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Entities;
 using Repositories.Enums;
 using Repositories.Repositories.Interfaces;
@@ -8,6 +9,7 @@ using Repositories.Repositories.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static QuestPDF.Helpers.Colors;
 
 namespace Domain.Services.Services
 {
@@ -18,19 +20,24 @@ namespace Domain.Services.Services
         private readonly IAnalysisResultRepository analysisResultRepository;
         private readonly IProductQualitySpecificationRepository productQualitySpecificationRepository;
         private readonly IUserRepository userRepository;
+        private readonly IQualityCertificateService qualityCertificateService;
+        private readonly IProductRepository productRepository;
 
         public QualityAssessmentService(
             IQualityAssessmentRepository qualityAssessmentRepository,
             IBatchRepository batchRepository,
             IAnalysisResultRepository analysisResultRepository,
             IProductQualitySpecificationRepository productQualitySpecificationRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IQualityCertificateService qualityCertificateService, IProductRepository productRepository)
         {
             this.qualityAssessmentRepository = qualityAssessmentRepository;
             this.batchRepository = batchRepository;
             this.analysisResultRepository = analysisResultRepository;
             this.productQualitySpecificationRepository = productQualitySpecificationRepository;
             this.userRepository = userRepository;
+            this.qualityCertificateService = qualityCertificateService;
+            this.productRepository = productRepository;
         }
 
         public async Task<QualityAssessmentDTO?> GetAssessmentByBatchIdAsync(
@@ -46,7 +53,7 @@ namespace Domain.Services.Services
             if (assessment is null)
                 return null;
 
-            return EntityToDTOMapper.ToQualityAssessmentDTO(assessment);
+            return loadProductAndBatch(EntityToDTOMapper.ToQualityAssessmentDTO(assessment));
         }
 
         public async Task<QualityAssessmentDTO> AssessBatchAsync(
@@ -55,21 +62,12 @@ namespace Domain.Services.Services
             int userId,
             CancellationToken cancellationToken = default)
         {
-            if (batchId <= 0)
-                throw new ArgumentException("Некорректный ID партии.");
-
-            if (userId <= 0)
-                throw new ArgumentException("Некорректный ID пользователя.");
 
             var batch = await batchRepository.GetByIdAsync(batchId, cancellationToken);
 
-            if (batch is null)
-                throw new InvalidOperationException("Партия не найдена.");
 
             var user = await userRepository.GetByIdAsync(userId, cancellationToken);
 
-            if (user is null)
-                throw new InvalidOperationException("Пользователь не найден.");
 
             var calculatedStatus = await CalculateBatchStatusAsync(batchId, cancellationToken);
 
@@ -119,20 +117,15 @@ namespace Domain.Services.Services
             assessment.Batch = batch;
             assessment.AssessedByUser = user;
 
-            return EntityToDTOMapper.ToQualityAssessmentDTO(assessment);
+            return loadProductAndBatch(EntityToDTOMapper.ToQualityAssessmentDTO(assessment));
         }
 
         public async Task<BatchStatus> CalculateBatchStatusAsync(
             int batchId,
             CancellationToken cancellationToken = default)
         {
-            if (batchId <= 0)
-                throw new ArgumentException("Некорректный ID партии.");
 
             var batch = await batchRepository.GetByIdAsync(batchId, cancellationToken);
-
-            if (batch is null)
-                throw new InvalidOperationException("Партия не найдена.");
 
             var specifications = await productQualitySpecificationRepository
                 .GetByProductIdAsync(batch.ProductId, cancellationToken);
@@ -140,9 +133,6 @@ namespace Domain.Services.Services
             var requiredSpecifications = specifications
                 .Where(x => x.IsRequired)
                 .ToList();
-
-            if (requiredSpecifications.Count == 0)
-                throw new InvalidOperationException("Для продукта не настроены обязательные спецификации качества.");
 
             var analysisResults = await analysisResultRepository
                 .GetByBatchIdAsync(batchId, cancellationToken);
@@ -163,6 +153,127 @@ namespace Domain.Services.Services
             }
 
             return BatchStatus.Approved;
+        }
+
+        public async Task<QualityAssessmentDTO> SaveAssessmentAsync(
+            int batchId,
+            QualityAssessmentDTO dto,
+            int userId,
+            CancellationToken cancellationToken = default)
+        {
+            return  loadProductAndBatch(await SaveOrFinalizeAssessmentAsync(
+                batchId,
+                dto,
+                userId,
+                isFinal: false,
+                cancellationToken));
+        }
+
+        public async Task<QualityAssessmentDTO> FinalizeAssessmentAsync(
+            int batchId,
+            QualityAssessmentDTO dto,
+            int userId,
+            CancellationToken cancellationToken = default)
+        {
+            return loadProductAndBatch(await SaveOrFinalizeAssessmentAsync(
+                batchId,
+                dto,
+                userId,
+                isFinal: true,
+                cancellationToken));
+        }
+
+        private async Task<QualityAssessmentDTO> SaveOrFinalizeAssessmentAsync(
+          int batchId,
+          QualityAssessmentDTO dto,
+          int userId,
+          bool isFinal,
+          CancellationToken cancellationToken)
+        {
+
+            var batch = await batchRepository.GetByIdAsync(batchId, cancellationToken);
+
+
+            var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+
+
+            var assessment = await qualityAssessmentRepository
+                .GetByBatchIdForUpdateAsync(batchId, cancellationToken);
+
+
+            if (assessment is null)
+            {
+                assessment = new QualityAssessment
+                {
+                    BatchId = batchId,
+                    IsApproved = dto.IsApproved,
+                    Conclusion = dto.Conclusion.Trim(),
+                    AssessedAt = DateTime.UtcNow,
+                    AssessedByUserId = userId,
+                    IsFinal = false
+                };
+
+                await qualityAssessmentRepository.AddAsync(assessment, cancellationToken);
+            }
+            else
+            {
+                assessment.IsApproved = dto.IsApproved;
+                assessment.Conclusion = dto.Conclusion.Trim();
+                assessment.AssessedAt = DateTime.UtcNow;
+                assessment.AssessedByUserId = userId;
+            }
+
+            if (isFinal)
+            {
+                assessment.IsFinal = true;
+
+                batch.Status = dto.IsApproved
+                    ? BatchStatus.Approved
+                    : BatchStatus.Rejected;
+            }
+           
+
+            await qualityAssessmentRepository.SaveChangesAsync(cancellationToken);
+
+            if (isFinal && dto.IsApproved)
+            {
+                await qualityCertificateService.GenerateCertificateAsync(
+                    batchId,
+                    userId,
+                    cancellationToken);
+            }
+
+            var analysisResults = await analysisResultRepository
+                .Query()
+                .Where(x => x.BatchId == batchId)
+                .ToListAsync(cancellationToken);
+
+            foreach (var decision in dto.ResultDecisions)
+            {
+                var analysisResult = analysisResults.FirstOrDefault(x =>
+                    x.QualityParameterId == decision.QualityParameterId);
+
+                if (analysisResult is null)
+                    continue;
+
+                analysisResult.IsWithinNorm = decision.IsWithinNorm;
+
+                analysisResultRepository.Update(analysisResult);
+            }
+
+            await analysisResultRepository.SaveChangesAsync(cancellationToken);
+
+            return EntityToDTOMapper.ToQualityAssessmentDTO(assessment);
+        }
+
+        private QualityAssessmentDTO loadProductAndBatch(QualityAssessmentDTO qualityAssessmentDTO)
+        {
+            qualityAssessmentDTO.AssessedByUser = EntityToDTOMapper.ToUserDTO(userRepository.GetByIdAsync(qualityAssessmentDTO.AssessedByUserId).Result);
+            var batch = EntityToDTOMapper.ToBatchDTO(batchRepository.GetByIdAsync(qualityAssessmentDTO.BatchId).Result);
+            batch.Product = EntityToDTOMapper.ToProductDTO(productRepository.GetByIdAsync(batch.ProductId).Result);
+
+            qualityAssessmentDTO.Batch = batch;
+            return qualityAssessmentDTO;
         }
     }
 }

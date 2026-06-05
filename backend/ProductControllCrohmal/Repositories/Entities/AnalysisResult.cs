@@ -19,6 +19,9 @@
         public bool? IsWithinNorm { get; set; }
 
         public string? Comment { get; set; }
+        public bool IsAnalysisCompleted { get; set; } = false;
+
+        public DateTime? AnalysisCompletedAt { get; set; }
 
         public DateTime AnalyzedAt { get; set; } = DateTime.UtcNow;
 

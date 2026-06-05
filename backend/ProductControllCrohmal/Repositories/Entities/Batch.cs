@@ -13,6 +13,7 @@ namespace Repositories.Entities
         public decimal Quantity { get; set; }
 
         public string Unit { get; set; } = "кг";
+        public bool IsAnalysisCompleted { get; set; } = false;
 
         public string? ProductionLine { get; set; }
 

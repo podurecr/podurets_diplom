@@ -1,58 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Security
 {
     public static class PasswordHasher
     {
-        private const int SaltSize = 16;
-        private const int KeySize = 32;
-        private const int Iterations = 100_000;
+        private static readonly PasswordHasher<object> Hasher = new();
 
-        public static string Hash(string password)
+        public static string HashPassword(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Пустий пароль.");
-
-            var salt = RandomNumberGenerator.GetBytes(SaltSize);
-
-            var hash = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                salt,
-                Iterations,
-                HashAlgorithmName.SHA256,
-                KeySize);
-
-            return $"PBKDF2${Iterations}${Convert.ToBase64String(salt)}${Convert.ToBase64String(hash)}";
+            return Hasher.HashPassword(null!, password);
         }
 
-        public static bool Verify(string password, string storedHash)
+        public static bool VerifyPassword(string passwordHash, string password)
         {
-            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(storedHash))
-                return false;
+            var result = Hasher.VerifyHashedPassword(null!, passwordHash, password);
 
-            if (!storedHash.StartsWith("PBKDF2$"))
-                return storedHash == password;
-
-            var parts = storedHash.Split('$');
-
-            if (parts.Length != 4)
-                return false;
-
-            var iterations = int.Parse(parts[1]);
-            var salt = Convert.FromBase64String(parts[2]);
-            var expectedHash = Convert.FromBase64String(parts[3]);
-
-            var actualHash = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                salt,
-                iterations,
-                HashAlgorithmName.SHA256,
-                expectedHash.Length);
-
-            return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
+            return result != PasswordVerificationResult.Failed;
         }
     }
 }

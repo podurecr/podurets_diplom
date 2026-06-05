@@ -17,39 +17,14 @@ namespace ProductControllCrohmal.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponseDto>> Login(
-            [FromBody] LoginRequestDto dto,
-            CancellationToken cancellationToken)
+        public async Task<ActionResult<LoginResponseDto>> Login(LoginRequestDto request)
         {
-            try
-            {
-                var response = await _authService.LoginAsync(dto, cancellationToken);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
-        }
+            var result = await _authService.LoginAsync(request);
 
-        [HttpGet("me/{userId:int}")]
-        public async Task<ActionResult<UserDTO>> GetCurrentUser(
-            int userId,
-            CancellationToken cancellationToken)
-        {
-            try
-            {
-                var user = await _authService.GetCurrentUserAsync(userId, cancellationToken);
+            if (result == null)
+                return Unauthorized("Невірний логін або пароль.");
 
-                if (user is null)
-                    return NotFound(new { message = "Користувач не знайден." });
-
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
+            return Ok(result);
         }
     }
 }

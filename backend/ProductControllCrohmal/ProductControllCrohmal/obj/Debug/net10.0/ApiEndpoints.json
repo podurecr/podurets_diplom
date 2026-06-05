@@ -1,6 +1,26 @@
 [
   {
     "ContainingType": "ProductControllCrohmal.Controllers.AnalysisResultController",
+    "Method": "GetAllAsync",
+    "RelativePath": "api/analysis-result",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.AnalysisResultDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.AnalysisResultController",
     "Method": "UpdateResult",
     "RelativePath": "api/analysis-result/{resultId}",
     "HttpMethod": "PUT",
@@ -73,6 +93,53 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProductControllCrohmal.Controllers.AnalysisResultController",
+    "Method": "CompleateAnalys",
+    "RelativePath": "api/analysis-result/batch/{batchId}/complete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "batchId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Domain.DTOs.SaveBatchAnalysisRequestDTO",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.AnalysisResultController",
+    "Method": "FinishBatchAnalysis",
+    "RelativePath": "api/analysis-result/batch/{batchId}/finish",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "batchId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProductControllCrohmal.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth/login",
@@ -81,7 +148,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
+        "Name": "request",
         "Type": "Domain.DTOs.LoginRequestDto",
         "IsRequired": true
       }
@@ -89,32 +156,6 @@
     "ReturnTypes": [
       {
         "Type": "Domain.DTOs.LoginResponseDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "ProductControllCrohmal.Controllers.AuthController",
-    "Method": "GetCurrentUser",
-    "RelativePath": "api/auth/me/{userId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Domain.DTOs.UserDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -155,6 +196,11 @@
       {
         "Name": "Unit",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsAnalysisCompleted",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -210,16 +256,6 @@
       {
         "Name": "Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -348,6 +384,11 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityAssessment.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityAssessment.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -400,16 +441,6 @@
       {
         "Name": "QualityAssessment.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -618,6 +649,16 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityAssessment.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityAssessment.Batch.QualityCertificate.Id",
         "Type": "System.Int32",
         "IsRequired": false
@@ -655,6 +696,11 @@
       {
         "Name": "QualityAssessment.Batch.QualityCertificate.Batch.Unit",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -710,16 +756,6 @@
       {
         "Name": "QualityAssessment.Batch.QualityCertificate.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -928,6 +964,16 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityAssessment.Batch.QualityCertificate.Batch.QualityCertificate",
         "Type": "Domain.DTOs.QualityCertificateDTO",
         "IsRequired": false
@@ -965,6 +1011,11 @@
       {
         "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.Unit",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -1020,16 +1071,6 @@
       {
         "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -1235,6 +1276,16 @@
       {
         "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.AssessedByUser.ShipmentDecisions",
         "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ShipmentDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -1483,6 +1534,11 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -1535,16 +1591,6 @@
       {
         "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -1753,6 +1799,16 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Id",
         "Type": "System.Int32",
         "IsRequired": false
@@ -1790,6 +1846,11 @@
       {
         "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.Unit",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -1845,16 +1906,6 @@
       {
         "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -2060,6 +2111,16 @@
       {
         "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.AssessedByUser.ShipmentDecisions",
         "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ShipmentDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.Batch.ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -2378,6 +2439,16 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityCertificate.Id",
         "Type": "System.Int32",
         "IsRequired": false
@@ -2415,6 +2486,11 @@
       {
         "Name": "QualityCertificate.Batch.Unit",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityCertificate.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -2470,16 +2546,6 @@
       {
         "Name": "QualityCertificate.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -2608,6 +2674,11 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityCertificate.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityCertificate.Batch.QualityAssessment.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -2660,16 +2731,6 @@
       {
         "Name": "QualityCertificate.Batch.QualityAssessment.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.QualityAssessment.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -2923,6 +2984,11 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -2975,16 +3041,6 @@
       {
         "Name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.QualityAssessment.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -3408,6 +3464,16 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityCertificate.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityCertificate.Batch.QualityCertificate.Id",
         "Type": "System.Int32",
         "IsRequired": false
@@ -3563,6 +3629,11 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -3615,16 +3686,6 @@
       {
         "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -3753,6 +3814,11 @@
         "IsRequired": false
       },
       {
+        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -3805,16 +3871,6 @@
       {
         "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -4135,6 +4191,16 @@
       {
         "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.AssessedByUser.ShipmentDecisions",
         "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ShipmentDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "QualityCertificate.Batch.ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -4498,6 +4564,11 @@
         "IsRequired": false
       },
       {
+        "Name": "ShipmentDecision.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "ShipmentDecision.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -4550,16 +4621,6 @@
       {
         "Name": "ShipmentDecision.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -4688,6 +4749,11 @@
         "IsRequired": false
       },
       {
+        "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -4740,16 +4806,6 @@
       {
         "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -4888,6 +4944,11 @@
         "IsRequired": false
       },
       {
+        "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -4940,16 +5001,6 @@
       {
         "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityAssessment.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -5483,6 +5534,16 @@
         "IsRequired": false
       },
       {
+        "Name": "ShipmentDecision.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShipmentDecision.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "ShipmentDecision.Batch.QualityCertificate.Id",
         "Type": "System.Int32",
         "IsRequired": false
@@ -5520,6 +5581,11 @@
       {
         "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.Unit",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -5575,16 +5641,6 @@
       {
         "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -5713,6 +5769,11 @@
         "IsRequired": false
       },
       {
+        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.IsAnalysisCompleted",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.ProductionLine",
         "Type": "System.String",
         "IsRequired": false
@@ -5765,16 +5826,6 @@
       {
         "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.Product.IsActive",
         "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.Product.Batches",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.Batch.Product.QualitySpecifications",
-        "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -6090,6 +6141,16 @@
       {
         "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.AssessedByUser.ShipmentDecisions",
         "Type": "System.Collections.Generic.ICollection\u00601[[Domain.DTOs.ShipmentDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.IsFinal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShipmentDecision.Batch.QualityCertificate.Batch.QualityAssessment.ResultDecisions",
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityAssessmentResultDecisionDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -6552,11 +6613,6 @@
         "Name": "dto",
         "Type": "Domain.DTOs.BatchDTO",
         "IsRequired": true
-      },
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -6755,7 +6811,7 @@
   {
     "ContainingType": "ProductControllCrohmal.Controllers.QualityAssessmentController",
     "Method": "GetAssessmentByBatchId",
-    "RelativePath": "api/quality-assessments/batch/{batchId}",
+    "RelativePath": "api/quality-assessment/batch/{batchId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -6780,8 +6836,34 @@
   },
   {
     "ContainingType": "ProductControllCrohmal.Controllers.QualityAssessmentController",
-    "Method": "AssessBatch",
-    "RelativePath": "api/quality-assessments/batch/{batchId}",
+    "Method": "CalculateBatchStatus",
+    "RelativePath": "api/quality-assessment/batch/{batchId}/calculated-status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "batchId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Repositories.Enums.BatchStatus",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityAssessmentController",
+    "Method": "FinalizeAssessment",
+    "RelativePath": "api/quality-assessment/batch/{batchId}/finalize",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -6816,8 +6898,106 @@
   },
   {
     "ContainingType": "ProductControllCrohmal.Controllers.QualityAssessmentController",
-    "Method": "CalculateBatchStatus",
-    "RelativePath": "api/quality-assessments/batch/{batchId}/calculated-status",
+    "Method": "SaveAssessment",
+    "RelativePath": "api/quality-assessment/batch/{batchId}/save",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "batchId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Domain.DTOs.QualityAssessmentDTO",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Domain.DTOs.QualityAssessmentDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
+    "Method": "GetCertificates",
+    "RelativePath": "api/quality-certificates",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityCertificateDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
+    "Method": "GetCertificateById",
+    "RelativePath": "api/quality-certificates/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Domain.DTOs.QualityCertificateDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
+    "Method": "DownloadPdf",
+    "RelativePath": "api/quality-certificates/{id}/pdf",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
+    "Method": "GetCertificateByBatchId",
+    "RelativePath": "api/quality-certificates/batch/{batchId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -6830,7 +7010,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Repositories.Enums.BatchStatus",
+        "Type": "Domain.DTOs.QualityCertificateDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -6842,24 +7022,8 @@
   },
   {
     "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
-    "Method": "ExportCertificateToPdf",
-    "RelativePath": "api/quality-certificates/{certificateId}/pdf",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "certificateId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
     "Method": "GenerateCertificate",
-    "RelativePath": "api/quality-certificates/batch/{batchId}",
+    "RelativePath": "api/quality-certificates/batch/{batchId}/generate",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -6888,22 +7052,155 @@
     ]
   },
   {
-    "ContainingType": "ProductControllCrohmal.Controllers.QualityCertificateController",
-    "Method": "GetCertificateByBatchId",
-    "RelativePath": "api/quality-certificates/batch/{batchId}",
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityParameterController",
+    "Method": "GetQualityParameters",
+    "RelativePath": "api/quality-parameters",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityParameterDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityParameterController",
+    "Method": "CreateQualityParameter",
+    "RelativePath": "api/quality-parameters",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Domain.DTOs.QualityParameterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Domain.DTOs.QualityParameterDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityParameterController",
+    "Method": "GetQualityParameterById",
+    "RelativePath": "api/quality-parameters/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "batchId",
+        "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "Domain.DTOs.QualityCertificateDTO",
+        "Type": "Domain.DTOs.QualityParameterDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityParameterController",
+    "Method": "UpdateQualityParameter",
+    "RelativePath": "api/quality-parameters/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Domain.DTOs.QualityParameterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Domain.DTOs.QualityParameterDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityParameterController",
+    "Method": "DeleteQualityParameter",
+    "RelativePath": "api/quality-parameters/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.QualityParameterController",
+    "Method": "GetActiveQualityParameters",
+    "RelativePath": "api/quality-parameters/active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.QualityParameterDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.ProductQualitySpecificationController",
+    "Method": "GetSpecifications",
+    "RelativePath": "api/quality-specifications",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.ProductQualitySpecificationDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -6988,8 +7285,8 @@
   },
   {
     "ContainingType": "ProductControllCrohmal.Controllers.ShipmentDecisionController",
-    "Method": "GetBatchesAllowedForShipment",
-    "RelativePath": "api/shipment-decisions/allowed-batches",
+    "Method": "GetDecisions",
+    "RelativePath": "api/shipment-decisions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -7008,8 +7305,54 @@
   },
   {
     "ContainingType": "ProductControllCrohmal.Controllers.ShipmentDecisionController",
-    "Method": "CreateDecision",
+    "Method": "GetBatchesAllowedForShipment",
+    "RelativePath": "api/shipment-decisions/allowed-batches",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Domain.DTOs.BatchDTO, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.ShipmentDecisionController",
+    "Method": "GetDecisionByBatchId",
     "RelativePath": "api/shipment-decisions/batch/{batchId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "batchId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Domain.DTOs.ShipmentDecisionDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductControllCrohmal.Controllers.ShipmentDecisionController",
+    "Method": "AllowShipment",
+    "RelativePath": "api/shipment-decisions/batch/{batchId}/allow",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -7039,9 +7382,9 @@
   },
   {
     "ContainingType": "ProductControllCrohmal.Controllers.ShipmentDecisionController",
-    "Method": "GetDecisionByBatchId",
-    "RelativePath": "api/shipment-decisions/batch/{batchId}",
-    "HttpMethod": "GET",
+    "Method": "DenyShipment",
+    "RelativePath": "api/shipment-decisions/batch/{batchId}/deny",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -7049,6 +7392,11 @@
         "Name": "batchId",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [

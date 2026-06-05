@@ -3,8 +3,56 @@
   "WorkspaceRootPath": "C:\\Diplom\\backend\\ProductControllCrohmal\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\interfaces\\ianalysisresultrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\interfaces\\ianalysisresultrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\shipmentdecisionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\shipmentdecisionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\qualityparameterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\qualityparameterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\qualitycertificateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\qualitycertificateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\qualityassessmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\qualityassessmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\productqualityspecificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\productqualityspecificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\batchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\batchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\domain\\services\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E528BBC3-1C26-8C35-F682-23718816ADCD}|Domain\\Domain.csproj|solutionrelative:domain\\services\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\interfaces\\ibatchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\interfaces\\ibatchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\repositories\\batchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\repositories\\batchrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\repositories\\repositories\\interfaces\\ishipmentdecisionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5B3CFA1-410E-B31F-F804-4CC6C048FE3E}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\interfaces\\ishipmentdecisionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83187E44-D683-DB9C-6057-31B84859885E}|ProductControllCrohmal\\ProductControllCrohmal.csproj|c:\\diplom\\backend\\productcontrollcrohmal\\productcontrollcrohmal\\controllers\\batchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83187E44-D683-DB9C-6057-31B84859885E}|ProductControllCrohmal\\ProductControllCrohmal.csproj|solutionrelative:productcontrollcrohmal\\controllers\\batchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,36 +62,176 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\UserService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\UserService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\UserService.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAcwJMAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:21:39.892Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "IAnalysisResultRepository.cs",
-              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
-              "RelativeToolTip": "Repositories\\Repositories\\Interfaces\\IAnalysisResultRepository.cs",
+              "DocumentIndex": 2,
+              "Title": "QualityParameterService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\QualityParameterService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\QualityParameterService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\QualityParameterService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\QualityParameterService.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAmwIoAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:20:54.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "QualityCertificateService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\QualityCertificateService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\QualityCertificateService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\QualityCertificateService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\QualityCertificateService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-22T17:07:42.813Z",
+              "WhenOpened": "2026-06-05T07:20:48.676Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "QualityAssessmentService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\QualityAssessmentService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\QualityAssessmentService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\QualityAssessmentService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\QualityAssessmentService.cs",
+              "ViewState": "AgIAAN8AAAAAAAAAAAAuwBIBAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:20:10.252Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\ProductService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ProductService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\ProductService.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAwwFMAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:19:49.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductQualitySpecificationService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ProductQualitySpecificationService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\ProductQualitySpecificationService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ProductQualitySpecificationService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\ProductQualitySpecificationService.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAIwFoAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:19:24.649Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BatchService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\BatchService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\BatchService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\BatchService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\BatchService.cs",
+              "ViewState": "AgIAAHkAAAAAAAAAAAAcwJkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:18:35.136Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\AuthService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\AuthService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T07:18:30.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BatchRepository.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\Repositories\\BatchRepository.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAswC0AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:35:20.535Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IBatchRepository.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\Interfaces\\IBatchRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:35:16.299Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ShipmentDecisionService.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "RelativeDocumentMoniker": "Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "RelativeToolTip": "Domain\\Services\\Services\\ShipmentDecisionService.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAAAHkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:35:04.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IShipmentDecisionRepository.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\Interfaces\\IShipmentDecisionRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T18:34:45.877Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "BatchController.cs",
+              "DocumentMoniker": "C:\\Diplom\\backend\\ProductControllCrohmal\\ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "RelativeDocumentMoniker": "ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "ToolTip": "C:\\Diplom\\backend\\ProductControllCrohmal\\ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "RelativeToolTip": "ProductControllCrohmal\\Controllers\\BatchController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T17:49:49.38Z"
             }
           ]
         }

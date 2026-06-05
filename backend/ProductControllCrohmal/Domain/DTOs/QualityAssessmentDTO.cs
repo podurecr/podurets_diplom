@@ -17,5 +17,8 @@
         public int AssessedByUserId { get; set; }
 
         public UserDTO? AssessedByUser { get; set; }
+        public bool IsFinal { get; set; } = false;
+        public List<QualityAssessmentResultDecisionDTO> ResultDecisions { get; set; } = new();
+
     }
 }

@@ -23,5 +23,14 @@ namespace Repositories.Repositories.Repositories
                 .OrderBy(x => x.QualityParameter!.Name)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<IReadOnlyList<AnalysisResult>> GetByBatchIdForUpdateAsync(
+           int batchId,
+           CancellationToken cancellationToken = default)
+        {
+            return await Query()
+                .Where(x => x.BatchId == batchId)
+                .ToListAsync(cancellationToken);
+        }
     }
 }

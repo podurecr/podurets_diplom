@@ -12,10 +12,14 @@ namespace Domain.Services.Services
     public class BatchService : IBatchService
     {
         private readonly IBatchRepository batchRepository;
+        private readonly IProductRepository productRepository;
+        private readonly IUserRepository userRepository;
 
-        public BatchService(IBatchRepository batchRepository)
+        public BatchService(IBatchRepository batchRepository, IProductRepository productRepository, IUserRepository userRepository)
         {
             this.batchRepository = batchRepository;
+            this.productRepository = productRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<List<BatchDTO>> GetBatchesAsync(
@@ -48,9 +52,17 @@ namespace Domain.Services.Services
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync(cancellationToken);
 
-            return batches
+            var batchesDTO = batches
                 .Select(EntityToDTOMapper.ToBatchDTO)
                 .ToList();
+
+            foreach(BatchDTO batch in batchesDTO)
+            {
+                batch.Product = EntityToDTOMapper.ToProductDTO(productRepository.GetByIdAsync(batch.ProductId).Result);
+                batch.CreatedByUser = EntityToDTOMapper.ToUserDTO(userRepository.GetByIdAsync(batch.CreatedByUserId).Result);
+            }
+
+            return batchesDTO;
         }
 
         public async Task<BatchDTO?> GetBatchByIdAsync(
@@ -62,48 +74,37 @@ namespace Domain.Services.Services
             if (batch is null)
                 return null;
 
-            return EntityToDTOMapper.ToBatchDTO(batch);
+            var dto = EntityToDTOMapper.ToBatchDTO(batch);
+
+            dto.Product = EntityToDTOMapper.ToProductDTO(productRepository.GetByIdAsync(batch.ProductId).Result);
+            dto.CreatedByUser = EntityToDTOMapper.ToUserDTO(userRepository.GetByIdAsync(batch.CreatedByUserId).Result);
+            return dto;
         }
 
         public async Task<BatchDTO> CreateBatchAsync(
-            BatchDTO dto,
-            int userId,
-            CancellationToken cancellationToken = default)
+            BatchDTO dto, CancellationToken cancellationToken = default)
         {
-            if (dto is null)
-                throw new ArgumentNullException(nameof(dto));
-
-            if (string.IsNullOrWhiteSpace(dto.BatchNumber))
-                throw new InvalidOperationException("Номер партии обязателен.");
-
-            if (dto.ProductId <= 0)
-                throw new InvalidOperationException("Не указан продукт партии.");
-
-            if (dto.Quantity <= 0)
-                throw new InvalidOperationException("Количество должно быть больше нуля.");
 
             var existingBatch = await batchRepository.GetByBatchNumberAsync(
                 dto.BatchNumber.Trim(),
                 cancellationToken);
 
-            if (existingBatch is not null)
-                throw new InvalidOperationException("Партия с таким номером уже существует.");
 
             var batch = new Batch
             {
                 BatchNumber = dto.BatchNumber.Trim(),
                 ProductionDate = dto.ProductionDate == default
-                    ? DateTime.UtcNow
-                    : dto.ProductionDate,
+                    ? DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
+                    : DateTime.SpecifyKind(dto.ProductionDate, DateTimeKind.Utc),
                 Quantity = dto.Quantity,
                 Unit = string.IsNullOrWhiteSpace(dto.Unit)
                     ? "кг"
                     : dto.Unit.Trim(),
                 ProductionLine = dto.ProductionLine,
                 Status = BatchStatus.Registered,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 ProductId = dto.ProductId,
-                CreatedByUserId = userId
+                CreatedByUserId = dto.CreatedByUserId
             };
 
             await batchRepository.AddAsync(batch, cancellationToken);
@@ -122,24 +123,10 @@ namespace Domain.Services.Services
 
             var batch = await batchRepository.GetByIdAsync(id, cancellationToken);
 
-            if (batch is null)
-                throw new KeyNotFoundException("Партия не найдена.");
-
-            if (string.IsNullOrWhiteSpace(dto.BatchNumber))
-                throw new InvalidOperationException("Номер партии обязателен.");
-
-            if (dto.ProductId <= 0)
-                throw new InvalidOperationException("Не указан продукт партии.");
-
-            if (dto.Quantity <= 0)
-                throw new InvalidOperationException("Количество должно быть больше нуля.");
-
             var existingBatch = await batchRepository.GetByBatchNumberAsync(
                 dto.BatchNumber.Trim(),
                 cancellationToken);
 
-            if (existingBatch is not null && existingBatch.Id != id)
-                throw new InvalidOperationException("Партия с таким номером уже существует.");
 
             batch.BatchNumber = dto.BatchNumber.Trim();
             batch.ProductionDate = dto.ProductionDate == default
@@ -165,8 +152,6 @@ namespace Domain.Services.Services
         {
             var batch = await batchRepository.GetByIdAsync(batchId, cancellationToken);
 
-            if (batch is null)
-                throw new KeyNotFoundException("Партия не найдена.");
 
             batch.Status = status;
 
